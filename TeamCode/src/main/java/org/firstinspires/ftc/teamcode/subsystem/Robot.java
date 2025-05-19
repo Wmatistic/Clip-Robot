@@ -9,4 +9,8 @@ public class Robot {
     public Robot(HardwareMap hardwareMap) {
         intake = new Intake(hardwareMap);
     }
+
+    public void updateAssembly() {
+        intake.updateAssembly();
+    }
 }
