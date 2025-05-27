@@ -15,19 +15,22 @@ public class Intake implements Subsystem {
     private CRServo turretServo;
     private PIDFController turretPID;
     private double turretTarget;
+    private ClawState clawState;
 
     public enum IntakeState {
-
+        INTAKING, TRANSFERRING, STOWED
     }
 
     public enum ClawState {
-
+        CLOSED, OPEN
     }
 
     public Intake(HardwareMap hardwareMap) {
-        turretServoInput = hardwareMap.get(AnalogInput.class, RobotConstants.Intake.turretServoInput);
-        turretServo = hardwareMap.crservo.get(RobotConstants.Intake.turretServo);
         turretPID = new PIDFController(RobotConstants.Intake.turretP, RobotConstants.Intake.turretI, RobotConstants.Intake.turretD, RobotConstants.Intake.turretF);
+    }
+
+    public void setClawState(ClawState state) {
+        clawState = state;
     }
 
     public void setState(IntakeState state) {
