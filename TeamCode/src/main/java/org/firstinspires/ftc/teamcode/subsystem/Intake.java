@@ -8,14 +8,13 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.util.RobotConstants;
+import org.firstinspires.ftc.teamcode.util.RobotHardware;
 
 public class Intake implements Subsystem {
-
-    private AnalogInput turretServoInput;
-    private CRServo turretServo;
-    private PIDFController turretPID;
+    private final RobotHardware robot;
     private double turretTarget;
     private ClawState clawState;
+    private int target, prevTarget;
 
     public enum IntakeState {
         INTAKING, TRANSFERRING, STOWED
@@ -25,8 +24,8 @@ public class Intake implements Subsystem {
         CLOSED, OPEN
     }
 
-    public Intake(HardwareMap hardwareMap) {
-        turretPID = new PIDFController(RobotConstants.Intake.turretP, RobotConstants.Intake.turretI, RobotConstants.Intake.turretD, RobotConstants.Intake.turretF);
+    public Intake() {
+        this.robot = RobotHardware.getInstance();
     }
 
     public void setClawState(ClawState state) {
@@ -37,33 +36,35 @@ public class Intake implements Subsystem {
 
     }
 
-    public double getIKTurretAngle(double x, double y) {
-        return Math.acos(x / RobotConstants.Intake.armLength);
-    }
-
-    public int getIKSlideExtension(double x, double y) {
-        return inchesToMotorTicks(y - Math.sqrt(Math.pow(x, 2) + Math.pow(RobotConstants.Intake.armLength, 2)));
-    }
-
-    public void updateAssembly() {
+    public void periodic() {
         updateTurret();
+        powerSlides();
+    }
+
+    public void setExtensionTarget(int position) {
+        prevTarget = target;
+        target = position;
+    }
+
+    public void powerSlides() {
+        double correction;
+
+        correction = robot.intakeSlidePID.calculate(robot.intakeSlideMotor.getCurrentPosition(), target);
+
+        robot.intakeSlideMotor.setPower(correction);
     }
 
     private void updateTurret() {
-        double correction = -turretPID.calculate(getTurretPosition(), turretTarget);
+        double correction = -robot.turretPID.calculate(getTurretPosition(), turretTarget);
 
-        turretServo.setPower(correction);
+        robot.turretServo.setPower(correction);
     }
 
     public double getTurretPosition() {
-        return turretServoInput.getVoltage() / 3.3;
+        return robot.turretServoInput.getVoltage() / 3.3;
     }
 
     public void setTurretTarget(double target) {
         turretTarget = target;
-    }
-
-    private int inchesToMotorTicks(double inches) {
-        return (int) (inches * 100);
     }
 }
