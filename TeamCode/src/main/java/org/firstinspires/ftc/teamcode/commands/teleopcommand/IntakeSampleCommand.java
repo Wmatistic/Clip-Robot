@@ -14,12 +14,19 @@ import org.firstinspires.ftc.teamcode.util.RobotConstants;
 public class IntakeSampleCommand extends SequentialCommandGroup {
     public IntakeSampleCommand() {
         super(
+                new ClawCommand(Intake.ClawState.OPEN),
                 new IntakeSlideCommand(IntakeInverseKinematics.slideExtension),
                 new TurretCommand(IntakeInverseKinematics.turretAngle),
-                new WaitCommand(1000),
+                new WaitCommand(500),
                 new ArmCommand(RobotConstants.Intake.armIntake),
+                new WaitCommand(500),
+                new ClawCommand(Intake.ClawState.CLOSED),
                 new WaitCommand(200),
-                new ClawCommand(Intake.ClawState.OPEN)
+                new ArmCommand(RobotConstants.Intake.armStowed),
+                new WaitCommand(200),
+                new IntakeSlideCommand(RobotConstants.Intake.slideStowed),
+                new TurretCommand(RobotConstants.Intake.turretStowed),
+                new WaitCommand(500)
         );
     }
 }

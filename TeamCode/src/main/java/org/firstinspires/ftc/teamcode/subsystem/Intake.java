@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.subsystem;
 
+import com.arcrobotics.ftclib.command.Robot;
 import com.arcrobotics.ftclib.command.Subsystem;
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.arcrobotics.ftclib.controller.PIDFController;
@@ -26,10 +27,21 @@ public class Intake implements Subsystem {
 
     public Intake() {
         this.robot = RobotHardware.getInstance();
+
+        setExtensionTarget(RobotConstants.Intake.slideStowed);
+        setTurretTarget(RobotConstants.Intake.turretStowed);
     }
 
     public void setClawState(ClawState state) {
         clawState = state;
+        switch (state) {
+            case OPEN:
+                robot.clawServo.setPosition(RobotConstants.Intake.clawOpen);
+                break;
+            case CLOSED:
+                robot.clawServo.setPosition(RobotConstants.Intake.clawClosed);
+                break;
+        }
     }
 
     public void setState(IntakeState state) {
@@ -44,6 +56,10 @@ public class Intake implements Subsystem {
     public void setExtensionTarget(int position) {
         prevTarget = target;
         target = position;
+    }
+
+    public int getExtensionTarget() {
+        return target;
     }
 
     public void powerSlides() {
