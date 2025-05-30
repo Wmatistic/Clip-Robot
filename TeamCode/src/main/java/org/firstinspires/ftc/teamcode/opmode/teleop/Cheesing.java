@@ -46,7 +46,7 @@ public class Cheesing extends CommandOpMode {
 
         robot.cameraCalcs.SampleToRealWorld(robot.limelightClass.getSampleLocations()[2], robot.limelightClass.getSampleLocations()[3]);
 
-        IntakeInverseKinematics.calculateIK(CameraCalculations.worldPositionX-5.199, CameraCalculations.worldPositionY);
+        IntakeInverseKinematics.calculateIK(CameraCalculations.worldPositionX-5.199, CameraCalculations.worldPositionY, robot.limelightClass.getSampleRotation());
 
         telemetry.addData("Intake Slide Motor Power: ",robot.intakeSlideMotor.getPower());
         telemetry.addData("Intake Slide Motor Target", robot.intake.getExtensionTarget());

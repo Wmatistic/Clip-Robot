@@ -66,18 +66,20 @@ public class RobotHardware {
         this.turretServoInput = hardwareMap.get(AnalogInput.class, RobotConstants.Intake.turretServoInput);
         this.turretServo = hardwareMap.crservo.get(RobotConstants.Intake.turretServo);
         this.turretPID = new PIDFController(RobotConstants.Intake.turretP, RobotConstants.Intake.turretI, RobotConstants.Intake.turretD, RobotConstants.Intake.turretF);
+
         this.armServo = hardwareMap.servo.get(RobotConstants.Intake.armServo);
         this.armServo.setPosition(RobotConstants.Intake.armStowed);
 
         this.clawServo = hardwareMap.servo.get(RobotConstants.Intake.clawServo);
         this.clawServo.setPosition(RobotConstants.Intake.clawOpen);
-//        this.clawRotationServo = hardwareMap.servo.get(RobotConstants.Intake.clawRotationServo);
+
+        this.clawRotationServo = hardwareMap.servo.get(RobotConstants.Intake.clawRotationServo);
+        this.clawRotationServo.setPosition(RobotConstants.Intake.clawRotationStowed);
 
         this.intakeSlideMotor = hardwareMap.get(DcMotorEx.class, RobotConstants.Intake.intakeSlideMotor);
         intakeSlideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         intakeSlideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         intakeSlideMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
         intakeSlidePID = new PIDFController(RobotConstants.Intake.slideP, RobotConstants.Intake.slideI, RobotConstants.Intake.slideD, RobotConstants.Intake.slideF);
         intakeSlideMotor.setPower(0);
 

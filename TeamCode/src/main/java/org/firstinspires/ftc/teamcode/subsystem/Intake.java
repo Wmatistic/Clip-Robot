@@ -54,8 +54,10 @@ public class Intake implements Subsystem {
     }
 
     public void setExtensionTarget(int position) {
-        prevTarget = target;
-        target = position;
+        if (position <= RobotConstants.Intake.slideMax && position >= RobotConstants.Intake.slideStowed) {
+            prevTarget = target;
+            target = position;
+        }
     }
 
     public int getExtensionTarget() {

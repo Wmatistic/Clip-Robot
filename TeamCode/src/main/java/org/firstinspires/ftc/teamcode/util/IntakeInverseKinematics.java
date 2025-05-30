@@ -3,14 +3,21 @@ package org.firstinspires.ftc.teamcode.util;
 public class IntakeInverseKinematics {
     public static double turretAngle = RobotConstants.Intake.turretStowed;
     public static int slideExtension = RobotConstants.Intake.slideStowed;
+    public static double clawRotation = RobotConstants.Intake.clawRotationStowed;
     public static double slideExtensionInches = 0.0;
     public static int slideOffset = 0;
     public static double turretAngleDeg = 0.0;
     public static double turretOffset = 0.1;
+    public static double clawRotationOffset = 90;
 
-    public static void calculateIK(double x, double y) {
+    public static void calculateIK(double x, double y, double r) {
         setIKTurretAngle(x, y);
         setIKSlideExtension(x, y);
+        setClawRotation(r);
+    }
+
+    public static void setClawRotation(double r) {
+        clawRotation = ((r + clawRotationOffset) + turretAngleDeg) / 360;
     }
 
     public static void setIKTurretAngle(double x, double y) {

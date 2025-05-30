@@ -26,4 +26,8 @@ public class Limelight {
         result = robot.limelight.getLatestResult();
         return result.getPythonOutput();
     }
+
+    public double getSampleRotation() {
+        return result.getPythonOutput()[1];
+    }
 }

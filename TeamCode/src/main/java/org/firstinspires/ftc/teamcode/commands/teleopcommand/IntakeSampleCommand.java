@@ -5,6 +5,7 @@ import com.arcrobotics.ftclib.command.WaitCommand;
 
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.ArmCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.ClawCommand;
+import org.firstinspires.ftc.teamcode.commands.subsystemcommand.ClawRotationCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.IntakeSlideCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.TurretCommand;
 import org.firstinspires.ftc.teamcode.subsystem.Intake;
@@ -19,6 +20,7 @@ public class IntakeSampleCommand extends SequentialCommandGroup {
                 new TurretCommand(IntakeInverseKinematics.turretAngle),
                 new WaitCommand(500),
                 new ArmCommand(RobotConstants.Intake.armIntake),
+                new ClawRotationCommand(IntakeInverseKinematics.clawRotation),
                 new WaitCommand(500),
                 new ClawCommand(Intake.ClawState.CLOSED),
                 new WaitCommand(200),
