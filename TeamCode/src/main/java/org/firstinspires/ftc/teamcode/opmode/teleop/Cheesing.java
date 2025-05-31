@@ -10,10 +10,12 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.commands.teleopcommand.IntakeSampleCommand;
 import org.firstinspires.ftc.teamcode.commands.teleopcommand.TransferSampleCommand;
+import org.firstinspires.ftc.teamcode.subsystem.Limelight;
 import org.firstinspires.ftc.teamcode.util.CameraCalculations;
 import org.firstinspires.ftc.teamcode.util.IntakeInverseKinematics;
 import org.firstinspires.ftc.teamcode.util.RobotConstants;
 import org.firstinspires.ftc.teamcode.util.RobotHardware;
+import org.firstinspires.ftc.teamcode.util.Sample;
 
 import java.util.Arrays;
 
@@ -44,9 +46,12 @@ public class Cheesing extends CommandOpMode {
         robot.periodic();
         driver.readButtons();
 
-        robot.cameraCalcs.SampleToRealWorld(robot.limelightClass.getSampleLocations()[2], robot.limelightClass.getSampleLocations()[3]);
+        robot.limelightClass.refreshSamples();
 
-        IntakeInverseKinematics.calculateIK(CameraCalculations.worldPositionX-5.199, CameraCalculations.worldPositionY, robot.limelightClass.getSampleRotation());
+        if (robot.limelightClass.hasSamples()) {
+            Sample targetedSample = robot.limelightClass.getTargetedSample();
+            IntakeInverseKinematics.calculateIK(targetedSample.x, targetedSample.y, targetedSample.r);
+        }
 
         telemetry.addData("Intake Slide Motor Power: ",robot.intakeSlideMotor.getPower());
         telemetry.addData("Intake Slide Motor Target", robot.intake.getExtensionTarget());
@@ -54,7 +59,7 @@ public class Cheesing extends CommandOpMode {
         telemetry.addData("Intake IK Turret Angle", IntakeInverseKinematics.turretAngle);
         telemetry.addData("Intake IK Slide Extension", IntakeInverseKinematics.slideExtension);
         telemetry.addData("Slide Extension Inches", IntakeInverseKinematics.slideExtensionInches);
-        //telemetry.addData("Limelight Result", Arrays.toString(robot.limelightClass.getSampleLocations()));
+        telemetry.addData("Limelight Result", Arrays.toString(robot.limelightClass.getSampleLocations()));
         telemetry.addData("Sample Location X: ", CameraCalculations.worldPositionX);
         telemetry.addData("Sample Location Y: ", CameraCalculations.worldPositionY);
         telemetry.update();
@@ -63,10 +68,21 @@ public class Cheesing extends CommandOpMode {
             robot.intake.setExtensionTarget(IntakeInverseKinematics.slideExtension);
             robot.intake.setTurretTarget(IntakeInverseKinematics.turretAngle);
             robot.armServo.setPosition(RobotConstants.Intake.armIntake);
+            robot.clawRotationServo.setPosition(IntakeInverseKinematics.clawRotation);
+        }
+        if (driver.wasJustPressed(GamepadKeys.Button.B)) {
+            robot.intake.setExtensionTarget(RobotConstants.Intake.slideStowed);
+            robot.intake.setTurretTarget(RobotConstants.Intake.turretStowed);
+            robot.armServo.setPosition(RobotConstants.Intake.armStowed);
+            robot.clawRotationServo.setPosition(RobotConstants.Intake.clawRotationStowed);
         }
 
         if (driver.wasJustPressed(GamepadKeys.Button.RIGHT_BUMPER)) {
             CommandScheduler.getInstance().schedule(new IntakeSampleCommand());
+        }
+
+        if (driver.wasJustPressed(GamepadKeys.Button.DPAD_RIGHT)) {
+            robot.limelightClass.targetNextSample();
         }
     }
 

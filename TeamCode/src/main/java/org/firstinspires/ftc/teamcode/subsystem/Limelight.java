@@ -1,10 +1,14 @@
 package org.firstinspires.ftc.teamcode.subsystem;
 
+import android.graphics.Camera;
+
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.util.CameraCalculations;
 import org.firstinspires.ftc.teamcode.util.RobotHardware;
+import org.firstinspires.ftc.teamcode.util.Sample;
 
 import java.util.ArrayList;
 
@@ -13,9 +17,16 @@ public class Limelight {
     RobotHardware robot;
     public static LLResult result;
 
+    public static ArrayList<Sample> samples;
+
+    public int targetedSampleIndex;
+
     public Limelight() {
         this.robot = RobotHardware.getInstance();
         result = robot.limelight.getLatestResult();
+
+        samples = new ArrayList<>();
+        targetedSampleIndex = 0;
     }
 
     public void refreshResult() {
@@ -27,7 +38,36 @@ public class Limelight {
         return result.getPythonOutput();
     }
 
-    public double getSampleRotation() {
-        return result.getPythonOutput()[1];
+    public void refreshSamples() {
+        samples.clear();
+        double[] cameraOutput = getSampleLocations();
+
+        for (int i = 1; i < cameraOutput.length-1; i+=3) {
+            if (cameraOutput[i] != 0 && cameraOutput[i + 1] != 0) {
+                robot.cameraCalcs.SampleToRealWorld(cameraOutput[i], cameraOutput[i + 1]);
+
+                samples.add(new Sample(CameraCalculations.worldPositionX, CameraCalculations.worldPositionY, cameraOutput[i + 2]));
+            }
+        }
+    }
+
+    public Sample getTargetedSample() {
+        return samples.get(targetedSampleIndex);
+    }
+
+    public void targetNextSample() {
+        if (targetedSampleIndex == samples.size()-1) {
+            targetedSampleIndex = 0;
+        } else {
+            targetedSampleIndex++;
+        }
+    }
+
+    public boolean hasSamples() {
+        return !samples.isEmpty();
+    }
+
+    public ArrayList<Sample> getSamples() {
+        return samples;
     }
 }

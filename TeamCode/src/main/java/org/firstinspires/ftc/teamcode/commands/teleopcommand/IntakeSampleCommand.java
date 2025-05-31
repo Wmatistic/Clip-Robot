@@ -24,6 +24,7 @@ public class IntakeSampleCommand extends SequentialCommandGroup {
                 new WaitCommand(500),
                 new ClawCommand(Intake.ClawState.CLOSED),
                 new WaitCommand(200),
+                new ClawRotationCommand(RobotConstants.Intake.clawRotationStowed),
                 new ArmCommand(RobotConstants.Intake.armStowed),
                 new WaitCommand(200),
                 new IntakeSlideCommand(RobotConstants.Intake.slideStowed),
