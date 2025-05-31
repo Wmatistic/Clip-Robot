@@ -14,28 +14,38 @@ public class IntakeInverseKinematics {
 
     public static void calculateIK(double x, double y, double r) {
         x += intakeXOffset;
-        setIKTurretAngle(x, y);
-        setIKSlideExtension(x, y);
-        setClawRotation(r);
+        turretAngleDeg = getIKTurretAngleDeg(x, y);
+        turretAngle = getIKTurretAngle(x, y);
+        slideExtension = getIKSlideExtension(x, y);
+        slideExtensionInches = getIKSlideExtensionInches(x, y);
+        clawRotation = getClawRotation(r);
     }
 
-    public static void setClawRotation(double r) {
-        clawRotation = (r + clawRotationOffset) / 180;
+    public static double getClawRotation(double r) {
+        return (r + clawRotationOffset) / 180;
     }
 
-    public static void setIKTurretAngle(double x, double y) {
-        turretAngle = Math.toDegrees(Math.acos(x / RobotConstants.Intake.armLength));
-        turretAngleDeg = ((turretAngle) + 90);
-        turretAngle = ((turretAngle) + 90) / 360;
-        turretAngle += turretOffset;
+    public static double getIKTurretAngle(double x, double y) {
+        double temp = Math.toDegrees(Math.acos(x / RobotConstants.Intake.armLength));
+        temp = ((temp) + 90) / 360;
+        temp += turretOffset;
+        return temp;
     }
 
-    public static void setIKSlideExtension(double x, double y) {
-        slideExtension = inchesToMotorTicks(y - Math.sqrt(Math.pow(RobotConstants.Intake.armLength, 2) - Math.pow(x, 2)));
+    public static double getIKTurretAngleDeg(double x, double y) {
+        double temp = Math.toDegrees(Math.acos(x / RobotConstants.Intake.armLength));
+        return ((temp) + 90);
+    }
+
+    public static int getIKSlideExtension(double x, double y) {
+        return inchesToMotorTicks(y - Math.sqrt(Math.pow(RobotConstants.Intake.armLength, 2) - Math.pow(x, 2)));
+    }
+
+    public static double getIKSlideExtensionInches(double x, double y) {
+        return y - Math.sqrt(Math.pow(RobotConstants.Intake.armLength, 2) - Math.pow(x, 2));
     }
 
     public static int inchesToMotorTicks(double inches) {
-        slideExtensionInches = inches;
         int result = (int) (inches / .024);
 
         if (result > 150) {

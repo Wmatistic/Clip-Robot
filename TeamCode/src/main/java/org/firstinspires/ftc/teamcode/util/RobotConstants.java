@@ -47,4 +47,9 @@ public class RobotConstants {
         public static String rightFront = "rightFront";
         public static String rightRear = "rightRear";
     }
+
+    @Config
+    public static class Limelight {
+
+    }
 }
