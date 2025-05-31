@@ -8,8 +8,11 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.commands.teleopcommand.IntakeSampleCommand;
+import org.firstinspires.ftc.teamcode.commands.teleopcommand.SampleCheckCommand;
 import org.firstinspires.ftc.teamcode.commands.teleopcommand.TransferSampleCommand;
+import org.firstinspires.ftc.teamcode.subsystem.Intake;
 import org.firstinspires.ftc.teamcode.subsystem.Limelight;
 import org.firstinspires.ftc.teamcode.util.CameraCalculations;
 import org.firstinspires.ftc.teamcode.util.IntakeInverseKinematics;
@@ -17,7 +20,9 @@ import org.firstinspires.ftc.teamcode.util.RobotConstants;
 import org.firstinspires.ftc.teamcode.util.RobotHardware;
 import org.firstinspires.ftc.teamcode.util.Sample;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @TeleOp
 public class Cheesing extends CommandOpMode {
@@ -25,6 +30,7 @@ public class Cheesing extends CommandOpMode {
     private final RobotHardware robot = RobotHardware.getInstance();
     private GamepadEx driver;
     private int x, y;
+    private Sample targetedSample;
 
     @Override
     public void initialize() {
@@ -38,6 +44,8 @@ public class Cheesing extends CommandOpMode {
 
         driver.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
                 .whenPressed(new TransferSampleCommand());
+
+        targetedSample = new Sample(0,0,0);
     }
 
     @Override
@@ -49,7 +57,7 @@ public class Cheesing extends CommandOpMode {
         robot.limelightClass.refreshSamples();
 
         if (robot.limelightClass.hasSamples()) {
-            Sample targetedSample = robot.limelightClass.getTargetedSample();
+            targetedSample = robot.limelightClass.getTargetedSample();
             IntakeInverseKinematics.calculateIK(targetedSample.x, targetedSample.y, targetedSample.r);
         }
 
@@ -59,9 +67,12 @@ public class Cheesing extends CommandOpMode {
         telemetry.addData("Intake IK Turret Angle", IntakeInverseKinematics.turretAngle);
         telemetry.addData("Intake IK Slide Extension", IntakeInverseKinematics.slideExtension);
         telemetry.addData("Slide Extension Inches", IntakeInverseKinematics.slideExtensionInches);
-        telemetry.addData("Limelight Result", Arrays.toString(robot.limelightClass.getSampleLocations()));
-        telemetry.addData("Sample Location X: ", CameraCalculations.worldPositionX);
-        telemetry.addData("Sample Location Y: ", CameraCalculations.worldPositionY);
+        //telemetry.addData("Limelight Result", Arrays.toString(robot.limelightClass.getSampleLocations()));
+        telemetry.addData("Sample Location X: ", targetedSample.x);
+        telemetry.addData("Sample Location Y: ", targetedSample.y);
+        telemetry.addData("Sample Rotation: ", targetedSample.r);
+        telemetry.addData("Intake Slide Current: ", robot.intakeSlideMotor.getCurrent(CurrentUnit.AMPS));
+        telemetry.addData("Intake Slide Reset: ", Intake.slideReset);
         telemetry.update();
 
         if (driver.wasJustPressed(GamepadKeys.Button.A)) {
@@ -78,11 +89,15 @@ public class Cheesing extends CommandOpMode {
         }
 
         if (driver.wasJustPressed(GamepadKeys.Button.RIGHT_BUMPER)) {
-            CommandScheduler.getInstance().schedule(new IntakeSampleCommand());
+            CommandScheduler.getInstance().schedule(new SampleCheckCommand());
         }
 
         if (driver.wasJustPressed(GamepadKeys.Button.DPAD_RIGHT)) {
             robot.limelightClass.targetNextSample();
+        }
+
+        if (driver.wasJustPressed(GamepadKeys.Button.Y)) {
+            robot.intake.resetSlides();
         }
     }
 

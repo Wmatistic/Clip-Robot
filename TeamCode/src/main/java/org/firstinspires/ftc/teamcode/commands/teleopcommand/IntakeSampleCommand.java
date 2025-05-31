@@ -7,6 +7,8 @@ import org.firstinspires.ftc.teamcode.commands.subsystemcommand.ArmCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.ClawCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.ClawRotationCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.IntakeSlideCommand;
+import org.firstinspires.ftc.teamcode.commands.subsystemcommand.SlideExtendCheckCommand;
+import org.firstinspires.ftc.teamcode.commands.subsystemcommand.SlideResetCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.TurretCommand;
 import org.firstinspires.ftc.teamcode.subsystem.Intake;
 import org.firstinspires.ftc.teamcode.util.IntakeInverseKinematics;
@@ -24,12 +26,14 @@ public class IntakeSampleCommand extends SequentialCommandGroup {
                 new WaitCommand(500),
                 new ClawCommand(Intake.ClawState.CLOSED),
                 new WaitCommand(200),
+                new SlideExtendCheckCommand(0),
                 new ClawRotationCommand(RobotConstants.Intake.clawRotationStowed),
                 new ArmCommand(RobotConstants.Intake.armStowed),
                 new WaitCommand(200),
                 new IntakeSlideCommand(RobotConstants.Intake.slideStowed),
                 new TurretCommand(RobotConstants.Intake.turretStowed),
-                new WaitCommand(500)
+                new WaitCommand(500),
+                new SlideResetCommand()
         );
     }
 }

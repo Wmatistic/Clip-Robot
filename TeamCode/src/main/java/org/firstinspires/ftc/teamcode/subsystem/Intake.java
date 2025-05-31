@@ -6,8 +6,10 @@ import com.arcrobotics.ftclib.controller.PIDController;
 import com.arcrobotics.ftclib.controller.PIDFController;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.util.RobotConstants;
 import org.firstinspires.ftc.teamcode.util.RobotHardware;
 
@@ -16,6 +18,10 @@ public class Intake implements Subsystem {
     private double turretTarget;
     private ClawState clawState;
     private int target, prevTarget;
+
+    public static boolean slideReset = false;
+
+    public static int slideSampleCheck = 0;
 
     public enum IntakeState {
         INTAKING, TRANSFERRING, STOWED
@@ -54,6 +60,7 @@ public class Intake implements Subsystem {
     }
 
     public void setExtensionTarget(int position) {
+        position += slideSampleCheck;
         if (position <= RobotConstants.Intake.slideMax && position >= RobotConstants.Intake.slideStowed) {
             prevTarget = target;
             target = position;
@@ -69,7 +76,24 @@ public class Intake implements Subsystem {
 
         correction = robot.intakeSlidePID.calculate(robot.intakeSlideMotor.getCurrentPosition(), target);
 
-        robot.intakeSlideMotor.setPower(correction);
+        if (slideReset) {
+            robot.intakeSlideMotor.setPower(-1);
+            if (robot.intakeSlideMotor.getCurrent(CurrentUnit.AMPS) > 5) {
+                robot.intakeSlideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                robot.intakeSlideMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                robot.intakeSlideMotor.setPower(0);
+
+                slideReset = false;
+            }
+        } else if (target == RobotConstants.Intake.slideStowed && (robot.intakeSlideMotor.getCurrentPosition() - target) <= 20) {
+            robot.intakeSlideMotor.setPower(0);
+        } else {
+                robot.intakeSlideMotor.setPower(correction);
+        }
+    }
+
+    public void resetSlides() {
+        slideReset = true;
     }
 
     private void updateTurret() {

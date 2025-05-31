@@ -8,7 +8,7 @@ public class IntakeInverseKinematics {
     public static int slideOffset = 30;
     public static double turretAngleDeg = 0.0;
     public static double turretOffset = 0.11;
-    public static double clawRotationOffset = 0;
+    public static double clawRotationOffset = -0.1;
 
     public static double intakeXOffset = -5.199;
 
@@ -38,7 +38,7 @@ public class IntakeInverseKinematics {
         slideExtensionInches = inches;
         int result = (int) (inches / .024);
 
-        if (result > 100) {
+        if (result > 150) {
             result -= slideOffset;
         }
 

@@ -4,6 +4,8 @@ import android.graphics.Camera;
 
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
+import com.qualcomm.hardware.limelightvision.LLResultTypes;
+import com.qualcomm.hardware.limelightvision.LLStatus;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.util.CameraCalculations;
@@ -11,6 +13,7 @@ import org.firstinspires.ftc.teamcode.util.RobotHardware;
 import org.firstinspires.ftc.teamcode.util.Sample;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Limelight {
 

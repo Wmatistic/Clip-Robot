@@ -27,16 +27,17 @@ public class RobotConstants {
         public static double turretD = 0.0;
         public static double turretF = 0.0;
         public static double turretStowed = 0.59;
-        public static double turretTransfer = 0.085;
+        public static double turretTransfer = 0.115;
 
         public static double armStowed = 0.0;
         public static double armIntake = 0.9;
-        public static double armTransfer = 0.6;
+        public static double armTransfer = 0.5;
 
         public static double clawOpen = 0.5;
         public static double clawClosed = 0.0;
 
         public static double clawRotationStowed = 0.0;
+        public static double clawRotationTransfer = 0.6;
     }
 
     @Config
