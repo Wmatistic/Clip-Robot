@@ -5,7 +5,7 @@ public class IntakeInverseKinematics {
     public static int slideExtension = RobotConstants.Intake.slideStowed;
     public static double clawRotation = RobotConstants.Intake.clawRotationStowed;
     public static double slideExtensionInches = 0.0;
-    public static int slideOffset = 30;
+    public static int slideOffset = 0;
     public static double turretAngleDeg = 0.0;
     public static double turretOffset = 0.11;
     public static double clawRotationOffset = -0.1;
@@ -48,9 +48,7 @@ public class IntakeInverseKinematics {
     public static int inchesToMotorTicks(double inches) {
         int result = (int) (inches / .024);
 
-        if (result > 150) {
-            result -= slideOffset;
-        }
+        result -= slideOffset;
 
         return result;
     }

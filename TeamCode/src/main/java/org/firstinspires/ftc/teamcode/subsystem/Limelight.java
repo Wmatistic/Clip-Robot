@@ -16,6 +16,7 @@ import org.firstinspires.ftc.teamcode.util.Sample;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.lang.*;
 
 public class Limelight {
 
@@ -51,10 +52,10 @@ public class Limelight {
             if (cameraOutput[i] != 0 && cameraOutput[i + 1] != 0) {
                 robot.cameraCalcs.SampleToRealWorld(cameraOutput[i], cameraOutput[i + 1]);
 
-                double tempSlideExtensionInches = IntakeInverseKinematics.getIKSlideExtensionInches(CameraCalculations.worldPositionX, CameraCalculations.worldPositionY);
+                double tempTurretAngle = IntakeInverseKinematics.getIKTurretAngle(CameraCalculations.worldPositionX, CameraCalculations.worldPositionY);
                 double tempSlideExtension = IntakeInverseKinematics.getIKSlideExtension(CameraCalculations.worldPositionX, CameraCalculations.worldPositionY);
 
-                if (!Double.isNaN(tempSlideExtensionInches) && tempSlideExtension < (RobotConstants.Intake.slideMax + Intake.slideSampleCheck)){
+                if (!Double.isNaN(tempTurretAngle) && tempSlideExtension < (RobotConstants.Intake.slideMax + Intake.slideSampleCheck)){
                     samples.add(new Sample(CameraCalculations.worldPositionX, CameraCalculations.worldPositionY, cameraOutput[i + 2]));
                 }
             }

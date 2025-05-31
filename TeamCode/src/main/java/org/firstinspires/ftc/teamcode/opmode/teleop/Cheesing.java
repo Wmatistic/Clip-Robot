@@ -24,6 +24,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+// TODO:
+//  1. fix isNaN error from being included in detected samples array
+//  2. tune limelight values
+//  3. fix structure of sample detection and intake related classes
+//  4. change how we handle the slides extending to check for samples
+
 @TeleOp
 public class Cheesing extends CommandOpMode {
 
@@ -64,7 +70,7 @@ public class Cheesing extends CommandOpMode {
         telemetry.addData("Intake Slide Motor Power: ",robot.intakeSlideMotor.getPower());
         telemetry.addData("Intake Slide Motor Target", robot.intake.getExtensionTarget());
         telemetry.addData("Turret Smth", robot.intake.getTurretPosition());
-        telemetry.addData("Intake IK Turret Angle", IntakeInverseKinematics.turretAngle);
+        telemetry.addData("Intake IK Turret Angle", Double.isNaN(IntakeInverseKinematics.turretAngle));
         telemetry.addData("Intake IK Slide Extension", IntakeInverseKinematics.slideExtension);
         telemetry.addData("Slide Extension Inches", IntakeInverseKinematics.slideExtensionInches);
         //telemetry.addData("Limelight Result", Arrays.toString(robot.limelightClass.getSampleLocations()));
@@ -94,8 +100,8 @@ public class Cheesing extends CommandOpMode {
         }
 
         if (driver.wasJustPressed(GamepadKeys.Button.X)) {
-            robot.intake.setExtensionTarget(200);
             Intake.slideSampleCheck = 200;
+            robot.intake.setExtensionTarget(0);
         }
 
         if (driver.wasJustPressed(GamepadKeys.Button.DPAD_RIGHT)) {

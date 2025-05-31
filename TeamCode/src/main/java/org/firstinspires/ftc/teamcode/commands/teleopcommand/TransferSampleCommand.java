@@ -7,6 +7,7 @@ import com.arcrobotics.ftclib.command.WaitCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.ArmCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.ClawCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.ClawRotationCommand;
+import org.firstinspires.ftc.teamcode.commands.subsystemcommand.IntakeSlideCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.SlideResetCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.TurretCommand;
 import org.firstinspires.ftc.teamcode.subsystem.Intake;
@@ -15,6 +16,7 @@ import org.firstinspires.ftc.teamcode.util.RobotConstants;
 public class TransferSampleCommand extends SequentialCommandGroup {
     public TransferSampleCommand() {
         super(
+                new IntakeSlideCommand(RobotConstants.Intake.slideStowed),
                 new SlideResetCommand(),
                 new TurretCommand(RobotConstants.Intake.turretTransfer),
                 new WaitCommand(500),

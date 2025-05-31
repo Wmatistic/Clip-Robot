@@ -19,7 +19,7 @@ public class RobotConstants {
         public static double slideI = 0.0;
         public static double slideD = 0.0;
         public static double slideF = 0.0;
-        public static int slideMax = 400;
+        public static int slideMax = 450;
         public static int slideStowed = 0;
 
         public static double turretP = 1.5;
