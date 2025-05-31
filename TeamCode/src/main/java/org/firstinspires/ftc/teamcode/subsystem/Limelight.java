@@ -9,6 +9,7 @@ import com.qualcomm.hardware.limelightvision.LLStatus;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.util.CameraCalculations;
+import org.firstinspires.ftc.teamcode.util.IntakeInverseKinematics;
 import org.firstinspires.ftc.teamcode.util.RobotHardware;
 import org.firstinspires.ftc.teamcode.util.Sample;
 
@@ -49,7 +50,11 @@ public class Limelight {
             if (cameraOutput[i] != 0 && cameraOutput[i + 1] != 0) {
                 robot.cameraCalcs.SampleToRealWorld(cameraOutput[i], cameraOutput[i + 1]);
 
-                samples.add(new Sample(CameraCalculations.worldPositionX, CameraCalculations.worldPositionY, cameraOutput[i + 2]));
+                IntakeInverseKinematics.calculateIK(CameraCalculations.worldPositionX, CameraCalculations.worldPositionY, cameraOutput[i + 2]);
+
+                if (!Double.isNaN(IntakeInverseKinematics.slideExtensionInches)){
+                    samples.add(new Sample(CameraCalculations.worldPositionX, CameraCalculations.worldPositionY, cameraOutput[i + 2]));
+                }
             }
         }
     }

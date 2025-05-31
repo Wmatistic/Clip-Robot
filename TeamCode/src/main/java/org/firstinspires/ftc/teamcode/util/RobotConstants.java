@@ -15,7 +15,7 @@ public class RobotConstants {
         public static String clawRotationServo = "clawRotationServo";
         public static String intakeSlideMotor = "intakeSlideMotor";
 
-        public static double slideP = .0055;
+        public static double slideP = .0045;
         public static double slideI = 0.0;
         public static double slideD = 0.0;
         public static double slideF = 0.0;

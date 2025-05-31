@@ -73,6 +73,7 @@ public class Cheesing extends CommandOpMode {
         telemetry.addData("Sample Rotation: ", targetedSample.r);
         telemetry.addData("Intake Slide Current: ", robot.intakeSlideMotor.getCurrent(CurrentUnit.AMPS));
         telemetry.addData("Intake Slide Reset: ", Intake.slideReset);
+        telemetry.addData("Intake Sample Slide Check: ", Intake.slideSampleCheck);
         telemetry.update();
 
         if (driver.wasJustPressed(GamepadKeys.Button.A)) {
@@ -89,7 +90,12 @@ public class Cheesing extends CommandOpMode {
         }
 
         if (driver.wasJustPressed(GamepadKeys.Button.RIGHT_BUMPER)) {
-            CommandScheduler.getInstance().schedule(new SampleCheckCommand());
+            CommandScheduler.getInstance().schedule(new IntakeSampleCommand());
+        }
+
+        if (driver.wasJustPressed(GamepadKeys.Button.X)) {
+            robot.intake.setExtensionTarget(200);
+            Intake.slideSampleCheck = 200;
         }
 
         if (driver.wasJustPressed(GamepadKeys.Button.DPAD_RIGHT)) {

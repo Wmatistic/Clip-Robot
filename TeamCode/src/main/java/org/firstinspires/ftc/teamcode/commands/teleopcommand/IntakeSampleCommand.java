@@ -13,6 +13,7 @@ import org.firstinspires.ftc.teamcode.commands.subsystemcommand.TurretCommand;
 import org.firstinspires.ftc.teamcode.subsystem.Intake;
 import org.firstinspires.ftc.teamcode.util.IntakeInverseKinematics;
 import org.firstinspires.ftc.teamcode.util.RobotConstants;
+import org.firstinspires.ftc.teamcode.util.RobotHardware;
 
 public class IntakeSampleCommand extends SequentialCommandGroup {
     public IntakeSampleCommand() {
@@ -32,8 +33,7 @@ public class IntakeSampleCommand extends SequentialCommandGroup {
                 new WaitCommand(200),
                 new IntakeSlideCommand(RobotConstants.Intake.slideStowed),
                 new TurretCommand(RobotConstants.Intake.turretStowed),
-                new WaitCommand(500),
-                new SlideResetCommand()
+                new WaitCommand(500)
         );
     }
 }

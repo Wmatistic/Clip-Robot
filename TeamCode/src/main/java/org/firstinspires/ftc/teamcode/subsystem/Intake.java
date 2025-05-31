@@ -21,7 +21,7 @@ public class Intake implements Subsystem {
 
     public static boolean slideReset = false;
 
-    public static int slideSampleCheck = 0;
+    public static int slideSampleCheck;
 
     public enum IntakeState {
         INTAKING, TRANSFERRING, STOWED
@@ -36,6 +36,7 @@ public class Intake implements Subsystem {
 
         setExtensionTarget(RobotConstants.Intake.slideStowed);
         setTurretTarget(RobotConstants.Intake.turretStowed);
+        slideSampleCheck = 0;
     }
 
     public void setClawState(ClawState state) {
@@ -88,7 +89,7 @@ public class Intake implements Subsystem {
         } else if (target == RobotConstants.Intake.slideStowed && (robot.intakeSlideMotor.getCurrentPosition() - target) <= 20) {
             robot.intakeSlideMotor.setPower(0);
         } else {
-                robot.intakeSlideMotor.setPower(correction);
+            robot.intakeSlideMotor.setPower(correction);
         }
     }
 
