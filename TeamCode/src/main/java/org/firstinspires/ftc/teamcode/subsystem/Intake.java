@@ -1,13 +1,7 @@
 package org.firstinspires.ftc.teamcode.subsystem;
 
-import com.arcrobotics.ftclib.command.Robot;
 import com.arcrobotics.ftclib.command.Subsystem;
-import com.arcrobotics.ftclib.controller.PIDController;
-import com.arcrobotics.ftclib.controller.PIDFController;
-import com.qualcomm.robotcore.hardware.AnalogInput;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.util.RobotConstants;
@@ -43,10 +37,10 @@ public class Intake implements Subsystem {
         clawState = state;
         switch (state) {
             case OPEN:
-                robot.clawServo.setPosition(RobotConstants.Intake.clawOpen);
+                robot.intakeClawServo.setPosition(RobotConstants.Intake.clawOpen);
                 break;
             case CLOSED:
-                robot.clawServo.setPosition(RobotConstants.Intake.clawClosed);
+                robot.intakeClawServo.setPosition(RobotConstants.Intake.clawClosed);
                 break;
         }
     }

@@ -1,16 +1,19 @@
 package org.firstinspires.ftc.teamcode.commands.teleopcommand;
 
-import com.arcrobotics.ftclib.command.Robot;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 
-import org.firstinspires.ftc.teamcode.commands.subsystemcommand.ArmCommand;
-import org.firstinspires.ftc.teamcode.commands.subsystemcommand.ClawCommand;
-import org.firstinspires.ftc.teamcode.commands.subsystemcommand.ClawRotationCommand;
-import org.firstinspires.ftc.teamcode.commands.subsystemcommand.IntakeSlideCommand;
-import org.firstinspires.ftc.teamcode.commands.subsystemcommand.SlideResetCommand;
-import org.firstinspires.ftc.teamcode.commands.subsystemcommand.TurretCommand;
+import org.firstinspires.ftc.teamcode.commands.subsystemcommand.intakecommand.IntakeArmCommand;
+import org.firstinspires.ftc.teamcode.commands.subsystemcommand.intakecommand.IntakeClawCommand;
+import org.firstinspires.ftc.teamcode.commands.subsystemcommand.intakecommand.ClawRotationCommand;
+import org.firstinspires.ftc.teamcode.commands.subsystemcommand.intakecommand.IntakeSlideCommand;
+import org.firstinspires.ftc.teamcode.commands.subsystemcommand.intakecommand.SlideResetCommand;
+import org.firstinspires.ftc.teamcode.commands.subsystemcommand.intakecommand.TurretCommand;
+import org.firstinspires.ftc.teamcode.commands.subsystemcommand.outtakecommand.OuttakeArmCommand;
+import org.firstinspires.ftc.teamcode.commands.subsystemcommand.outtakecommand.OuttakeClawCommand;
+import org.firstinspires.ftc.teamcode.commands.subsystemcommand.outtakecommand.OuttakeSlideCommand;
 import org.firstinspires.ftc.teamcode.subsystem.Intake;
+import org.firstinspires.ftc.teamcode.subsystem.Outtake;
 import org.firstinspires.ftc.teamcode.util.RobotConstants;
 
 public class TransferSampleCommand extends SequentialCommandGroup {
@@ -18,17 +21,23 @@ public class TransferSampleCommand extends SequentialCommandGroup {
         super(
                 new IntakeSlideCommand(RobotConstants.Intake.slideStowed),
                 new SlideResetCommand(),
+                new OuttakeSlideCommand(RobotConstants.Outtake.slideTransfer),
                 new TurretCommand(RobotConstants.Intake.turretTransfer),
                 new WaitCommand(500),
-                new ArmCommand(RobotConstants.Intake.armTransfer),
+                new IntakeArmCommand(RobotConstants.Intake.armTransfer),
                 new ClawRotationCommand(RobotConstants.Intake.clawRotationTransfer),
                 new WaitCommand(500),
-                new ClawCommand(Intake.ClawState.OPEN),
+                new IntakeClawCommand(Intake.ClawState.OPEN),
                 new WaitCommand(200),
-                new ArmCommand(RobotConstants.Intake.armStowed),
+                new IntakeArmCommand(RobotConstants.Intake.armStowed),
                 new ClawRotationCommand(RobotConstants.Intake.clawRotationStowed),
                 new WaitCommand(500),
-                new TurretCommand(RobotConstants.Intake.turretStowed)
+                new TurretCommand(RobotConstants.Intake.turretStowed),
+                new OuttakeClawCommand(Outtake.ClawState.OPEN),
+                new OuttakeArmCommand(RobotConstants.Outtake.armStowed),
+                new OuttakeSlideCommand(RobotConstants.Outtake.slideStowed),
+                new WaitCommand(300),
+                new OuttakeClawCommand(Outtake.ClawState.CLOSED)
         );
     }
 }

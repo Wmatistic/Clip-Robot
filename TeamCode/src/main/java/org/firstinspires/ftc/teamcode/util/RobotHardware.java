@@ -14,9 +14,11 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.subsystem.ClipMech;
 import org.firstinspires.ftc.teamcode.subsystem.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystem.Intake;
 import org.firstinspires.ftc.teamcode.subsystem.Limelight;
+import org.firstinspires.ftc.teamcode.subsystem.Outtake;
 
 @Config
 public class RobotHardware {
@@ -25,16 +27,34 @@ public class RobotHardware {
     public AnalogInput turretServoInput;
     public CRServo turretServo;
     public PIDFController turretPID;
-    public Servo armServo;
-    public Servo clawServo;
+    public Servo intakeArmServo;
+    public Servo intakeClawServo;
     public Servo clawRotationServo;
     public DcMotorEx intakeSlideMotor;
     public PIDFController intakeSlidePID;
 
+    // Drivetrain
     public DcMotorEx leftFront, leftRear, rightFront, rightRear;
     public IMU imu;
 
+    // Limelight
     public Limelight3A limelight;
+
+    // Clip Mechanism
+    public CRServo railServo;
+    public AnalogInput railServoInput;
+    public PIDFController railPID;
+    public Servo clipHolderServo;
+    public Servo clipPivotServo;
+
+    // Outtake
+    public DcMotorEx outtakeMotorOne, outtakeMotorTwo, outtakeMotorThree;
+    public PIDFController outtakeSlideExtendPID, outtakeSlideRetractPID;
+    public CRServo outtakeArmServo;
+    public AnalogInput outtakeArmInput;
+    public PIDFController outtakeArmPID;
+    public Servo outtakeClawServo;
+
 
     private HardwareMap hardwareMap;
     private static RobotHardware instance = null;
@@ -42,10 +62,15 @@ public class RobotHardware {
 
     public GamepadEx driver;
 
+
+
     public Intake intake;
     public Drivetrain drivetrain;
-    public IntakeInverseKinematics intakeIK;
+    public ClipMech clipMech;
+    public Outtake outtake;
 
+
+    public IntakeInverseKinematics intakeIK;
     public CameraCalculations cameraCalcs;
     public Limelight limelightClass;
 
@@ -62,16 +87,18 @@ public class RobotHardware {
 
         this.driver = driver;
 
+
+
         // ******************* INTAKE ******************* //
         this.turretServoInput = hardwareMap.get(AnalogInput.class, RobotConstants.Intake.turretServoInput);
         this.turretServo = hardwareMap.crservo.get(RobotConstants.Intake.turretServo);
         this.turretPID = new PIDFController(RobotConstants.Intake.turretP, RobotConstants.Intake.turretI, RobotConstants.Intake.turretD, RobotConstants.Intake.turretF);
 
-        this.armServo = hardwareMap.servo.get(RobotConstants.Intake.armServo);
-        this.armServo.setPosition(RobotConstants.Intake.armStowed);
+        this.intakeArmServo = hardwareMap.servo.get(RobotConstants.Intake.armServo);
+        this.intakeArmServo.setPosition(RobotConstants.Intake.armStowed);
 
-        this.clawServo = hardwareMap.servo.get(RobotConstants.Intake.clawServo);
-        this.clawServo.setPosition(RobotConstants.Intake.clawOpen);
+        this.intakeClawServo = hardwareMap.servo.get(RobotConstants.Intake.clawServo);
+        this.intakeClawServo.setPosition(RobotConstants.Intake.clawOpen);
 
         this.clawRotationServo = hardwareMap.servo.get(RobotConstants.Intake.clawRotationServo);
         this.clawRotationServo.setPosition(RobotConstants.Intake.clawRotationStowed);
@@ -82,6 +109,8 @@ public class RobotHardware {
         intakeSlideMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         intakeSlidePID = new PIDFController(RobotConstants.Intake.slideP, RobotConstants.Intake.slideI, RobotConstants.Intake.slideD, RobotConstants.Intake.slideF);
         intakeSlideMotor.setPower(0);
+
+
 
         // ******************* DRIVETRAIN ******************* //
         leftFront = hardwareMap.get(DcMotorEx.class, RobotConstants.Drivetrain.leftFront);
@@ -100,14 +129,69 @@ public class RobotHardware {
         imu.initialize(parameters);
         imu.resetYaw();
 
+
+
         // ******************* LIMELIGHT ******************* //
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
         limelight.setPollRateHz(100);
         limelight.pipelineSwitch(0);
 
+
+
+        // ******************* ClIP MECHANISM ******************* //
+        this.railServo = hardwareMap.crservo.get(RobotConstants.ClipMech.railServo);
+        this.railServoInput = hardwareMap.get(AnalogInput.class, RobotConstants.ClipMech.railServoInput);
+        this.railPID = new PIDFController(RobotConstants.ClipMech.railP, RobotConstants.ClipMech.railI, RobotConstants.ClipMech.railD, RobotConstants.ClipMech.railF);
+
+        this.clipHolderServo = hardwareMap.servo.get(RobotConstants.ClipMech.clipHolderServo);
+        this.clipHolderServo.setPosition(RobotConstants.ClipMech.clipHolderTransfer);
+
+        this.clipPivotServo = hardwareMap.servo.get(RobotConstants.ClipMech.clipPivotServo);
+        this.clipPivotServo.setPosition(RobotConstants.ClipMech.clipPivotUp);
+
+
+
+        // ******************* OUTTAKE ******************* //
+        this.outtakeMotorOne = hardwareMap.get(DcMotorEx.class, RobotConstants.Outtake.outtakeMotorOne);
+        this.outtakeMotorTwo = hardwareMap.get(DcMotorEx.class, RobotConstants.Outtake.outtakeMotorTwo);
+        this.outtakeMotorThree = hardwareMap.get(DcMotorEx.class, RobotConstants.Outtake.outtakeMotorThree);
+
+        outtakeMotorOne.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        outtakeMotorOne.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        outtakeMotorOne.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        outtakeMotorOne.setPower(0);
+
+        outtakeMotorTwo.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        outtakeMotorTwo.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        outtakeMotorTwo.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        outtakeMotorTwo.setPower(0);
+
+        outtakeMotorThree.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        outtakeMotorThree.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        outtakeMotorThree.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        outtakeMotorThree.setPower(0);
+
+        outtakeMotorTwo.setDirection(DcMotorSimple.Direction.REVERSE);
+        outtakeMotorThree.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        outtakeSlideExtendPID = new PIDFController(RobotConstants.Outtake.outtakeExtendingP, RobotConstants.Outtake.outtakeExtendingI, RobotConstants.Outtake.outtakeExtendingD, RobotConstants.Outtake.outtakeExtendingF);
+        outtakeSlideRetractPID = new PIDFController(RobotConstants.Outtake.outtakeRetractingP, RobotConstants.Outtake.outtakeRetractingI, RobotConstants.Outtake.outtakeRetractingD, RobotConstants.Outtake.outtakeRetractingF);
+
+        outtakeArmServo = hardwareMap.crservo.get(RobotConstants.Outtake.outtakeArmServo);
+        outtakeArmInput = hardwareMap.get(AnalogInput.class, RobotConstants.Outtake.outtakeArmInput);
+        outtakeArmPID = new PIDFController(RobotConstants.Outtake.armP, RobotConstants.Outtake.armI, RobotConstants.Outtake.armD, RobotConstants.Outtake.armF);
+
+        outtakeClawServo = hardwareMap.servo.get(RobotConstants.Outtake.outtakeClawServo);
+        outtakeClawServo.setPosition(RobotConstants.Outtake.clawClosed);
+
+
+
         intake = new Intake();
-        intakeIK = new IntakeInverseKinematics();
         drivetrain = new Drivetrain();
+        clipMech = new ClipMech();
+        outtake = new Outtake();
+
+        intakeIK = new IntakeInverseKinematics();
         limelightClass = new Limelight();
         cameraCalcs = new CameraCalculations();
     }
@@ -115,5 +199,7 @@ public class RobotHardware {
     public void periodic() {
         intake.periodic();
         drivetrain.periodic();
+        clipMech.periodic();
+        outtake.periodic();
     }
 }

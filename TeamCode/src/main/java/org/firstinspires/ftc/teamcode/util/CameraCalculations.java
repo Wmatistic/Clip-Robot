@@ -19,8 +19,8 @@ public class CameraCalculations {
         thetaYDeg = 42.0;
         imageWidth = 640;
         imageHeight = 480;
-        cameraTiltDeg = 55;
-        cameraHeight = 6.918;
+        cameraTiltDeg = 50;
+        cameraHeight = 11.07;
 
         thetaX = Math.toRadians(thetaXDeg);
         thetaY = Math.toRadians(thetaYDeg);

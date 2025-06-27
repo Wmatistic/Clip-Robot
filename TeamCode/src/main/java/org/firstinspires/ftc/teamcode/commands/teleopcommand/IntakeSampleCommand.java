@@ -3,33 +3,31 @@ package org.firstinspires.ftc.teamcode.commands.teleopcommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 
-import org.firstinspires.ftc.teamcode.commands.subsystemcommand.ArmCommand;
-import org.firstinspires.ftc.teamcode.commands.subsystemcommand.ClawCommand;
-import org.firstinspires.ftc.teamcode.commands.subsystemcommand.ClawRotationCommand;
-import org.firstinspires.ftc.teamcode.commands.subsystemcommand.IntakeSlideCommand;
-import org.firstinspires.ftc.teamcode.commands.subsystemcommand.SlideExtendCheckCommand;
-import org.firstinspires.ftc.teamcode.commands.subsystemcommand.SlideResetCommand;
-import org.firstinspires.ftc.teamcode.commands.subsystemcommand.TurretCommand;
+import org.firstinspires.ftc.teamcode.commands.subsystemcommand.intakecommand.IntakeArmCommand;
+import org.firstinspires.ftc.teamcode.commands.subsystemcommand.intakecommand.IntakeClawCommand;
+import org.firstinspires.ftc.teamcode.commands.subsystemcommand.intakecommand.ClawRotationCommand;
+import org.firstinspires.ftc.teamcode.commands.subsystemcommand.intakecommand.IntakeSlideCommand;
+import org.firstinspires.ftc.teamcode.commands.subsystemcommand.intakecommand.SlideExtendCheckCommand;
+import org.firstinspires.ftc.teamcode.commands.subsystemcommand.intakecommand.TurretCommand;
 import org.firstinspires.ftc.teamcode.subsystem.Intake;
 import org.firstinspires.ftc.teamcode.util.IntakeInverseKinematics;
 import org.firstinspires.ftc.teamcode.util.RobotConstants;
-import org.firstinspires.ftc.teamcode.util.RobotHardware;
 
 public class IntakeSampleCommand extends SequentialCommandGroup {
     public IntakeSampleCommand() {
         super(
-                new ClawCommand(Intake.ClawState.OPEN),
+                new IntakeClawCommand(Intake.ClawState.OPEN),
                 new IntakeSlideCommand(IntakeInverseKinematics.slideExtension),
                 new TurretCommand(IntakeInverseKinematics.turretAngle),
                 new WaitCommand(500),
-                new ArmCommand(RobotConstants.Intake.armIntake),
+                new IntakeArmCommand(RobotConstants.Intake.armIntake),
                 new ClawRotationCommand(IntakeInverseKinematics.clawRotation),
                 new WaitCommand(500),
-                new ClawCommand(Intake.ClawState.CLOSED),
+                new IntakeClawCommand(Intake.ClawState.CLOSED),
                 new WaitCommand(200),
                 new SlideExtendCheckCommand(0),
                 new ClawRotationCommand(RobotConstants.Intake.clawRotationStowed),
-                new ArmCommand(RobotConstants.Intake.armStowed),
+                new IntakeArmCommand(RobotConstants.Intake.armStowed),
                 new WaitCommand(200),
                 new IntakeSlideCommand(RobotConstants.Intake.slideStowed),
                 new TurretCommand(RobotConstants.Intake.turretStowed),

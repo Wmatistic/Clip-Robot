@@ -1,18 +1,14 @@
 package org.firstinspires.ftc.teamcode.commands.teleopcommand;
 
-import android.transition.Slide;
-
 import com.arcrobotics.ftclib.command.ConditionalCommand;
-import com.arcrobotics.ftclib.command.Robot;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 
-import org.firstinspires.ftc.teamcode.commands.subsystemcommand.IntakeSlideCommand;
-import org.firstinspires.ftc.teamcode.commands.subsystemcommand.RefreshIntakeIK;
-import org.firstinspires.ftc.teamcode.commands.subsystemcommand.RefreshSampleCommand;
-import org.firstinspires.ftc.teamcode.commands.subsystemcommand.SlideExtendCheckCommand;
+import org.firstinspires.ftc.teamcode.commands.subsystemcommand.intakecommand.IntakeSlideCommand;
+import org.firstinspires.ftc.teamcode.commands.subsystemcommand.intakecommand.RefreshIntakeIK;
+import org.firstinspires.ftc.teamcode.commands.subsystemcommand.intakecommand.RefreshSampleCommand;
+import org.firstinspires.ftc.teamcode.commands.subsystemcommand.intakecommand.SlideExtendCheckCommand;
 import org.firstinspires.ftc.teamcode.util.IntakeInverseKinematics;
-import org.firstinspires.ftc.teamcode.util.RobotConstants;
 import org.firstinspires.ftc.teamcode.util.RobotHardware;
 
 public class SampleCheckCommand extends SequentialCommandGroup {

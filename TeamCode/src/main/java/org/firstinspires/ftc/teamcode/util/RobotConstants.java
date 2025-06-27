@@ -15,7 +15,7 @@ public class RobotConstants {
         public static String clawRotationServo = "clawRotationServo";
         public static String intakeSlideMotor = "intakeSlideMotor";
 
-        public static double slideP = .0045;
+        public static double slideP = .005;
         public static double slideI = 0.0;
         public static double slideD = 0.0;
         public static double slideF = 0.0;
@@ -51,5 +51,61 @@ public class RobotConstants {
     @Config
     public static class Limelight {
 
+    }
+
+    @Config
+    public static class ClipMech {
+        public static String railServo = "railServo";
+        public static String railServoInput = "railServoInput";
+        public static String clipHolderServo = "clipHolderServo";
+        public static String clipPivotServo = "clipPivotServo";
+
+        public static double railP = 2.0;
+        public static double railI = 0.0;
+        public static double railD = 0.0;
+        public static double railF = 0.0;
+
+        public static double clipHolderTransfer = 0.0;
+
+        public static double clipPivotUp = 0.0;
+        public static double clipPivotDown = 0.5;
+    }
+
+    @Config
+    public static class Outtake {
+        public static String outtakeMotorOne = "outtakeMotorOne";
+        public static String outtakeMotorTwo = "outtakeMotorTwo";
+        public static String outtakeMotorThree = "outtakeMotorThree";
+        public static String outtakeArmServo = "outtakeArmServo";
+        public static String outtakeArmInput = "outtakeArmInput";
+        public static String outtakeClawServo = "outtakeClawServo";
+
+        public static double outtakeExtendingP = 0.006;
+        public static double outtakeExtendingI = 0.0;
+        public static double outtakeExtendingD = 0.0;
+        public static double outtakeExtendingF = 0.0;
+
+        public static double outtakeRetractingP = 0.0053;
+        public static double outtakeRetractingI = 0.0;
+        public static double outtakeRetractingD = 0.0;
+        public static double outtakeRetractingF = 0.0;
+
+        public static int slideStowed = 0;
+        public static int slideTransfer = 300;
+
+
+
+        public static double armP = 1.0;
+        public static double armI = 0.0;
+        public static double armD = 0.0;
+        public static double armF = 0.0;
+
+        public static double armStowed = 1.0;
+        public static double armTest = -1;
+
+
+
+        public static double clawClosed = 0.4;
+        public static double clawOpen = 0.1;
     }
 }
