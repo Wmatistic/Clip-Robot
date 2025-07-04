@@ -58,6 +58,7 @@ public class RobotConstants {
         public static String railServo = "railServo";
         public static String railServoInput = "railServoInput";
         public static String clipHolderServo = "clipHolderServo";
+        public static String clipHolderServoInput = "clipHolderServoInput";
         public static String clipPivotServo = "clipPivotServo";
 
         public static double railP = 2.0;
@@ -65,10 +66,20 @@ public class RobotConstants {
         public static double railD = 0.0;
         public static double railF = 0.0;
 
-        public static double clipHolderTransfer = 0.0;
+        public static double railStowed = 0.95;
+        public static double railFirstClip = 0.7;
 
-        public static double clipPivotUp = 0.0;
-        public static double clipPivotDown = 0.5;
+        public static double clipHolderP = 2.0;
+        public static double clipHolderI = 0.0;
+        public static double clipHolderD = 0.0;
+        public static double clipHolderF = 0.0;
+
+        public static double clipHolderStowed = -1.0;
+        public static double clipHolderTransfer = 1.0;
+
+        public static double clipPivotUp = 0.6;
+        public static double clipPivotDown = 0.0;
+        public static double clipPivotTransfer = 0.45;
     }
 
     @Config
@@ -91,7 +102,7 @@ public class RobotConstants {
         public static double outtakeRetractingF = 0.0;
 
         public static int slideStowed = 0;
-        public static int slideTransfer = 300;
+        public static int slideTransfer = 350;
 
 
 
@@ -100,12 +111,14 @@ public class RobotConstants {
         public static double armD = 0.0;
         public static double armF = 0.0;
 
-        public static double armStowed = 1.0;
+        public static double armStowed = 0.3;
+        public static double armClip = -0.5;
+        public static double armClipInter = 0.3;
         public static double armTest = -1;
 
 
 
-        public static double clawClosed = 0.4;
-        public static double clawOpen = 0.1;
+        public static double clawClosed = 0.45;
+        public static double clawOpen = 0.25;
     }
 }

@@ -44,7 +44,9 @@ public class RobotHardware {
     public CRServo railServo;
     public AnalogInput railServoInput;
     public PIDFController railPID;
-    public Servo clipHolderServo;
+    public CRServo clipHolderServo;
+    public AnalogInput clipHolderServoInput;
+    public PIDFController clipHolderPID;
     public Servo clipPivotServo;
 
     // Outtake
@@ -143,8 +145,9 @@ public class RobotHardware {
         this.railServoInput = hardwareMap.get(AnalogInput.class, RobotConstants.ClipMech.railServoInput);
         this.railPID = new PIDFController(RobotConstants.ClipMech.railP, RobotConstants.ClipMech.railI, RobotConstants.ClipMech.railD, RobotConstants.ClipMech.railF);
 
-        this.clipHolderServo = hardwareMap.servo.get(RobotConstants.ClipMech.clipHolderServo);
-        this.clipHolderServo.setPosition(RobotConstants.ClipMech.clipHolderTransfer);
+        this.clipHolderServo = hardwareMap.crservo.get(RobotConstants.ClipMech.clipHolderServo);
+        this.clipHolderServoInput = hardwareMap.get(AnalogInput.class, RobotConstants.ClipMech.clipHolderServoInput);
+        this.clipHolderPID = new PIDFController(RobotConstants.ClipMech.clipHolderP, RobotConstants.ClipMech.clipHolderI, RobotConstants.ClipMech.clipHolderD, RobotConstants.ClipMech.clipHolderF);
 
         this.clipPivotServo = hardwareMap.servo.get(RobotConstants.ClipMech.clipPivotServo);
         this.clipPivotServo.setPosition(RobotConstants.ClipMech.clipPivotUp);

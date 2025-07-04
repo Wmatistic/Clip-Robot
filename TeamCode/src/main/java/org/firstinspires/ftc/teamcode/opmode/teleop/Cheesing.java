@@ -7,6 +7,7 @@ import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
+import org.firstinspires.ftc.teamcode.commands.teleopcommand.ClipSampleCommand;
 import org.firstinspires.ftc.teamcode.commands.teleopcommand.IntakeSampleCommand;
 import org.firstinspires.ftc.teamcode.commands.teleopcommand.TransferSampleCommand;
 import org.firstinspires.ftc.teamcode.subsystem.Intake;
@@ -44,6 +45,9 @@ public class Cheesing extends CommandOpMode {
         driver.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
                 .whenPressed(new TransferSampleCommand());
 
+        operator.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
+                .whenPressed(new ClipSampleCommand());
+
         targetedSample = new Sample(0,0,0);
     }
 
@@ -77,8 +81,7 @@ public class Cheesing extends CommandOpMode {
         telemetry.addData("Rail Servo Position: ", robot.clipMech.getRailPosition());
         telemetry.addData("Rail Target Position: ", robot.clipMech.getRailTarget());
         telemetry.addData("Rail Servo Power: ", robot.railServo.getPower());
-        telemetry.addData("Outtake Motor Power: ", robot.outtakeMotorOne.getPower());
-        telemetry.addData("Outtake Motor Position: ", robot.outtakeMotorOne.getCurrentPosition());
+        telemetry.addData("Rail Turns: ", robot.clipMech.getTurns());
         telemetry.update();
 
         if (driver.wasJustPressed(GamepadKeys.Button.A)) {

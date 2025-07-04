@@ -1,8 +1,11 @@
 package org.firstinspires.ftc.teamcode.commands.teleopcommand;
 
+import com.arcrobotics.ftclib.command.Robot;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 
+import org.firstinspires.ftc.teamcode.commands.subsystemcommand.clipmechcommand.ClipPivotCommand;
+import org.firstinspires.ftc.teamcode.commands.subsystemcommand.clipmechcommand.RailCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.intakecommand.IntakeArmCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.intakecommand.IntakeClawCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.intakecommand.ClawRotationCommand;
@@ -12,6 +15,7 @@ import org.firstinspires.ftc.teamcode.commands.subsystemcommand.intakecommand.Tu
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.outtakecommand.OuttakeArmCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.outtakecommand.OuttakeClawCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.outtakecommand.OuttakeSlideCommand;
+import org.firstinspires.ftc.teamcode.subsystem.ClipMech;
 import org.firstinspires.ftc.teamcode.subsystem.Intake;
 import org.firstinspires.ftc.teamcode.subsystem.Outtake;
 import org.firstinspires.ftc.teamcode.util.RobotConstants;
@@ -23,6 +27,8 @@ public class TransferSampleCommand extends SequentialCommandGroup {
                 new SlideResetCommand(),
                 new OuttakeSlideCommand(RobotConstants.Outtake.slideTransfer),
                 new TurretCommand(RobotConstants.Intake.turretTransfer),
+                new RailCommand(RobotConstants.ClipMech.railStowed),
+                new ClipPivotCommand(ClipMech.ClipPivotState.UP),
                 new WaitCommand(500),
                 new IntakeArmCommand(RobotConstants.Intake.armTransfer),
                 new ClawRotationCommand(RobotConstants.Intake.clawRotationTransfer),
@@ -37,7 +43,12 @@ public class TransferSampleCommand extends SequentialCommandGroup {
                 new OuttakeArmCommand(RobotConstants.Outtake.armStowed),
                 new OuttakeSlideCommand(RobotConstants.Outtake.slideStowed),
                 new WaitCommand(300),
-                new OuttakeClawCommand(Outtake.ClawState.CLOSED)
+                new OuttakeClawCommand(Outtake.ClawState.CLOSED),
+                new OuttakeArmCommand(RobotConstants.Outtake.armClip),
+                new WaitCommand(300),
+                new ClipPivotCommand(ClipMech.ClipPivotState.DOWN),
+                new WaitCommand(100),
+                new OuttakeArmCommand(RobotConstants.Outtake.armClipInter)
         );
     }
 }
