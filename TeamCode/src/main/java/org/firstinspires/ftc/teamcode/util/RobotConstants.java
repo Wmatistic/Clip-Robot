@@ -60,6 +60,7 @@ public class RobotConstants {
         public static String clipHolderServo = "clipHolderServo";
         public static String clipHolderServoInput = "clipHolderServoInput";
         public static String clipPivotServo = "clipPivotServo";
+        public static String clipHolderClawServo = "clipHolderClawServo";
 
         public static double railP = 2.0;
         public static double railI = 0.0;
@@ -67,7 +68,10 @@ public class RobotConstants {
         public static double railF = 0.0;
 
         public static double railStowed = 0.95;
-        public static double railFirstClip = 0.7;
+        public static double railClipping = 1.0;
+        public static double railSecureClip = 0.8;
+        public static double railFirstClip = 0.55;
+        public static double railOutTheWay = 1.3;
 
         public static double clipHolderP = 2.0;
         public static double clipHolderI = 0.0;
@@ -75,11 +79,15 @@ public class RobotConstants {
         public static double clipHolderF = 0.0;
 
         public static double clipHolderStowed = -1.0;
-        public static double clipHolderTransfer = 1.0;
+        public static double clipHolderTransfer = 0.9;
+
+        public static double clipHolderClawClosed = 0.0;
+        public static double clipHolderClawOpen = 0.7;
+        public static double clipHolderClawHalfOpen = 0.35;
 
         public static double clipPivotUp = 0.6;
         public static double clipPivotDown = 0.0;
-        public static double clipPivotTransfer = 0.45;
+        public static double clipPivotTransfer = 0.25;
     }
 
     @Config
@@ -96,7 +104,7 @@ public class RobotConstants {
         public static double outtakeExtendingD = 0.0;
         public static double outtakeExtendingF = 0.0;
 
-        public static double outtakeRetractingP = 0.0053;
+        public static double outtakeRetractingP = 0.0044;
         public static double outtakeRetractingI = 0.0;
         public static double outtakeRetractingD = 0.0;
         public static double outtakeRetractingF = 0.0;
@@ -111,9 +119,9 @@ public class RobotConstants {
         public static double armD = 0.0;
         public static double armF = 0.0;
 
-        public static double armStowed = 0.3;
+        public static double armStowed = 0.55;
         public static double armClip = -0.5;
-        public static double armClipInter = 0.3;
+        public static double armClipInter = 0.55;
         public static double armTest = -1;
 
 

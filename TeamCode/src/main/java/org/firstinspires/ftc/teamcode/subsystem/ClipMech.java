@@ -13,12 +13,6 @@ public class ClipMech implements Subsystem {
 
     private double prevRailPosition, railTurns;
 
-    private ClipPivotState clipPivotState;
-
-    public enum ClipPivotState {
-        UP, DOWN
-    }
-
     public ClipMech() {
         this.robot = RobotHardware.getInstance();
 
@@ -33,18 +27,6 @@ public class ClipMech implements Subsystem {
     public void periodic() {
         updateRail();
         updateClipHolder();
-    }
-
-    public void setClipPivotState(ClipPivotState state) {
-        clipPivotState = state;
-        switch (state) {
-            case UP:
-                robot.clipPivotServo.setPosition(RobotConstants.ClipMech.clipPivotUp);
-                break;
-            case DOWN:
-                robot.clipPivotServo.setPosition(RobotConstants.ClipMech.clipPivotDown);
-                break;
-        }
     }
 
     private void updateRail() {

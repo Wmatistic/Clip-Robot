@@ -48,6 +48,7 @@ public class RobotHardware {
     public AnalogInput clipHolderServoInput;
     public PIDFController clipHolderPID;
     public Servo clipPivotServo;
+    public Servo clipHolderClawServo;
 
     // Outtake
     public DcMotorEx outtakeMotorOne, outtakeMotorTwo, outtakeMotorThree;
@@ -150,7 +151,10 @@ public class RobotHardware {
         this.clipHolderPID = new PIDFController(RobotConstants.ClipMech.clipHolderP, RobotConstants.ClipMech.clipHolderI, RobotConstants.ClipMech.clipHolderD, RobotConstants.ClipMech.clipHolderF);
 
         this.clipPivotServo = hardwareMap.servo.get(RobotConstants.ClipMech.clipPivotServo);
-        this.clipPivotServo.setPosition(RobotConstants.ClipMech.clipPivotUp);
+        this.clipPivotServo.setPosition(RobotConstants.ClipMech.clipPivotTransfer);
+
+        this.clipHolderClawServo = hardwareMap.servo.get(RobotConstants.ClipMech.clipHolderClawServo);
+        this.clipHolderClawServo.setPosition(RobotConstants.ClipMech.clipHolderClawClosed);
 
 
 

@@ -6,9 +6,9 @@ import org.firstinspires.ftc.teamcode.subsystem.ClipMech;
 import org.firstinspires.ftc.teamcode.util.RobotHardware;
 
 public class ClipPivotCommand extends InstantCommand {
-    public ClipPivotCommand(ClipMech.ClipPivotState clipPivotState) {
+    public ClipPivotCommand(double position) {
         super(
-                () -> RobotHardware.getInstance().clipMech.setClipPivotState(clipPivotState)
+                () -> RobotHardware.getInstance().clipPivotServo.setPosition(position)
         );
     }
 }

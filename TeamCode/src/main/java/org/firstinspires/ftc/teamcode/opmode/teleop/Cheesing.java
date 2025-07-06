@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.opmode.teleop;
 
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.CommandScheduler;
+import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -9,6 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.commands.teleopcommand.ClipSampleCommand;
 import org.firstinspires.ftc.teamcode.commands.teleopcommand.IntakeSampleCommand;
+import org.firstinspires.ftc.teamcode.commands.teleopcommand.LoadClipCommand;
 import org.firstinspires.ftc.teamcode.commands.teleopcommand.TransferSampleCommand;
 import org.firstinspires.ftc.teamcode.subsystem.Intake;
 import org.firstinspires.ftc.teamcode.util.IntakeInverseKinematics;
@@ -43,9 +45,18 @@ public class Cheesing extends CommandOpMode {
         robot.limelight.start();
 
         driver.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
-                .whenPressed(new TransferSampleCommand());
+                .whenPressed(
+                        new SequentialCommandGroup(
+                                new LoadClipCommand(),
+                                new TransferSampleCommand(),
+                                new ClipSampleCommand()
+                        )
+                );
 
         operator.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
+                .whenPressed(new LoadClipCommand());
+
+        operator.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
                 .whenPressed(new ClipSampleCommand());
 
         targetedSample = new Sample(0,0,0);
@@ -112,37 +123,6 @@ public class Cheesing extends CommandOpMode {
 
         if (driver.wasJustPressed(GamepadKeys.Button.Y)) {
             robot.intake.resetSlides();
-        }
-
-//        if (operator.wasJustPressed(GamepadKeys.Button.Y)) {
-//            robot.clipMech.setRailTarget(1.0);
-//        }
-//        if (operator.wasJustPressed(GamepadKeys.Button.B)) {
-//            robot.clipMech.setRailTarget(0.0);
-//        }
-//
-//        if (operator.wasJustPressed(GamepadKeys.Button.A)) {
-//            robot.clipHolderServo.setPosition(1);
-//        }
-//        if (operator.wasJustPressed(GamepadKeys.Button.X)) {
-//            robot.clipHolderServo.setPosition(0);
-//        }
-
-
-        if (operator.wasJustPressed(GamepadKeys.Button.DPAD_UP)) {
-            robot.outtake.setSlideTarget(RobotConstants.Outtake.slideTransfer);
-        }
-
-        if (operator.wasJustPressed(GamepadKeys.Button.DPAD_DOWN)) {
-            robot.outtake.setSlideTarget(RobotConstants.Outtake.slideStowed);
-        }
-
-        if (operator.wasJustPressed(GamepadKeys.Button.DPAD_RIGHT)) {
-            robot.outtake.setArmTarget(RobotConstants.Outtake.armTest);
-        }
-
-        if (operator.wasJustPressed(GamepadKeys.Button.DPAD_LEFT)) {
-            robot.outtake.setArmTarget(RobotConstants.Outtake.armStowed);
         }
     }
 
