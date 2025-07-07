@@ -70,8 +70,12 @@ public class RobotConstants {
         public static double railStowed = 0.95;
         public static double railClipping = 1.0;
         public static double railSecureClip = 0.8;
-        public static double railFirstClip = 0.55;
         public static double railOutTheWay = 1.3;
+
+        public static double railFirstClip = 0.55;
+        public static double railSecondClip = 0.45;
+        public static double railThirdClip = 0.35;
+        public static double railFourthClip = 0.25;
 
         public static double clipHolderP = 2.0;
         public static double clipHolderI = 0.0;
@@ -98,6 +102,7 @@ public class RobotConstants {
         public static String outtakeArmServo = "outtakeArmServo";
         public static String outtakeArmInput = "outtakeArmInput";
         public static String outtakeClawServo = "outtakeClawServo";
+        public static String outtakeColorSensor = "outtakeColorSensor";
 
         public static double outtakeExtendingP = 0.006;
         public static double outtakeExtendingI = 0.0;
@@ -128,5 +133,17 @@ public class RobotConstants {
 
         public static double clawClosed = 0.45;
         public static double clawOpen = 0.25;
+
+
+
+        // Color Sensor Values
+        public static int upperRed = 0;
+        public static int lowerRed = 0;
+
+        public static int upperGreen = 0;
+        public static int lowerGreen = 0;
+
+        public static int upperBlue = 0;
+        public static int lowerBlue = 0;
     }
 }

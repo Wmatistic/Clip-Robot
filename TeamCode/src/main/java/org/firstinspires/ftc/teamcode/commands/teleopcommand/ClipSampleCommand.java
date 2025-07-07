@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.commands.teleopcommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 
+import org.firstinspires.ftc.teamcode.commands.subsystemcommand.clipmechcommand.ClipLoadedCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.clipmechcommand.ClipPivotCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.clipmechcommand.RailCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.outtakecommand.OuttakeArmCommand;
@@ -23,7 +24,8 @@ public class ClipSampleCommand extends SequentialCommandGroup {
                 new WaitCommand(300),
                 new ClipPivotCommand(RobotConstants.ClipMech.clipPivotDown),
                 new WaitCommand(200),
-                new OuttakeArmCommand(RobotConstants.Outtake.armClipInter)
+                new OuttakeArmCommand(RobotConstants.Outtake.armClipInter),
+                new ClipLoadedCommand(false)
         );
     }
 }

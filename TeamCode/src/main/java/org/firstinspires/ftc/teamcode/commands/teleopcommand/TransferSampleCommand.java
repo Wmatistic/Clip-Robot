@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.commands.subsystemcommand.intakecommand.Cl
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.intakecommand.IntakeSlideCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.intakecommand.SlideResetCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.intakecommand.TurretCommand;
+import org.firstinspires.ftc.teamcode.commands.subsystemcommand.outtakecommand.CheckForSampleCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.outtakecommand.OuttakeArmCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.outtakecommand.OuttakeClawCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.outtakecommand.OuttakeSlideCommand;
@@ -32,6 +33,7 @@ public class TransferSampleCommand extends SequentialCommandGroup {
                 new WaitCommand(500),
                 new IntakeArmCommand(RobotConstants.Intake.armTransfer),
                 new ClawRotationCommand(RobotConstants.Intake.clawRotationTransfer),
+                new CheckForSampleCommand(),
                 new WaitCommand(500),
                 new IntakeClawCommand(Intake.ClawState.OPEN),
                 new WaitCommand(200),

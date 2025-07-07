@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode.subsystem;
 
 import com.arcrobotics.ftclib.command.Subsystem;
+import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 
+import org.firstinspires.ftc.teamcode.util.Globals;
 import org.firstinspires.ftc.teamcode.util.RobotConstants;
 import org.firstinspires.ftc.teamcode.util.RobotHardware;
 
@@ -41,6 +43,18 @@ public class Outtake implements Subsystem {
                 robot.outtakeClawServo.setPosition(RobotConstants.Outtake.clawClosed);
                 break;
         }
+    }
+
+    public void updateSample() {
+        Globals.SAMPLE_LOADED = isSample();
+    }
+
+    public boolean isSample() {
+        NormalizedRGBA colors = robot.outtakeColorSensor.getNormalizedColors();
+
+        return  colors.red < RobotConstants.Outtake.upperRed && colors.red > RobotConstants.Outtake.lowerRed &&
+                colors.green < RobotConstants.Outtake.upperGreen && colors.green > RobotConstants.Outtake.lowerGreen &&
+                colors.blue < RobotConstants.Outtake.upperBlue && colors.blue > RobotConstants.Outtake.lowerBlue;
     }
 
     public void updateArm() {

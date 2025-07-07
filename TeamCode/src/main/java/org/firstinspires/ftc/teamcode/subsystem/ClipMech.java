@@ -13,6 +13,8 @@ public class ClipMech implements Subsystem {
 
     private double prevRailPosition, railTurns;
 
+    private int currentClip;
+
     public ClipMech() {
         this.robot = RobotHardware.getInstance();
 
@@ -21,6 +23,8 @@ public class ClipMech implements Subsystem {
 
         this.railTarget = RobotConstants.ClipMech.railStowed;
         this.clipHolderTarget = RobotConstants.ClipMech.clipHolderStowed;
+
+        this.currentClip = 1;
     }
 
     @Override
@@ -32,6 +36,25 @@ public class ClipMech implements Subsystem {
     private void updateRail() {
         double correction = robot.railPID.calculate(getRailPosition(), getRailTarget());
         robot.railServo.setPower(-correction);
+    }
+
+    public double getCurrentClipPosition() {
+        switch (currentClip) {
+            case 1:
+                return RobotConstants.ClipMech.railFirstClip;
+            case 2:
+                return RobotConstants.ClipMech.railSecondClip;
+            case 3:
+                return RobotConstants.ClipMech.railThirdClip;
+            case 4:
+                return RobotConstants.ClipMech.railFourthClip;
+            default:
+                return railTarget;
+        }
+    }
+
+    public void incrementCurrentClip() {
+        currentClip++;
     }
 
     public double getRealRailPosition() {

@@ -13,6 +13,7 @@ import org.firstinspires.ftc.teamcode.commands.teleopcommand.IntakeSampleCommand
 import org.firstinspires.ftc.teamcode.commands.teleopcommand.LoadClipCommand;
 import org.firstinspires.ftc.teamcode.commands.teleopcommand.TransferSampleCommand;
 import org.firstinspires.ftc.teamcode.subsystem.Intake;
+import org.firstinspires.ftc.teamcode.util.Globals;
 import org.firstinspires.ftc.teamcode.util.IntakeInverseKinematics;
 import org.firstinspires.ftc.teamcode.util.RobotConstants;
 import org.firstinspires.ftc.teamcode.util.RobotHardware;
@@ -47,7 +48,6 @@ public class Cheesing extends CommandOpMode {
         driver.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
                 .whenPressed(
                         new SequentialCommandGroup(
-                                new LoadClipCommand(),
                                 new TransferSampleCommand(),
                                 new ClipSampleCommand()
                         )
@@ -69,12 +69,7 @@ public class Cheesing extends CommandOpMode {
         driver.readButtons();
         operator.readButtons();
 
-        robot.limelightClass.refreshSamples();
 
-        if (robot.limelightClass.hasSamples()) {
-            targetedSample = robot.limelightClass.getTargetedSample();
-            IntakeInverseKinematics.calculateIK(targetedSample.x, targetedSample.y, targetedSample.r);
-        }
 
         telemetry.addData("Intake Slide Motor Power: ",robot.intakeSlideMotor.getPower());
         telemetry.addData("Intake Slide Motor Target", robot.intake.getExtensionTarget());
@@ -94,6 +89,27 @@ public class Cheesing extends CommandOpMode {
         telemetry.addData("Rail Servo Power: ", robot.railServo.getPower());
         telemetry.addData("Rail Turns: ", robot.clipMech.getTurns());
         telemetry.update();
+
+
+
+        robot.outtake.updateSample();
+
+
+
+        robot.limelightClass.refreshSamples();
+
+        if (robot.limelightClass.hasSamples()) {
+            targetedSample = robot.limelightClass.getTargetedSample();
+            IntakeInverseKinematics.calculateIK(targetedSample.x, targetedSample.y, targetedSample.r);
+        }
+
+
+
+        if (!Globals.CLIP_LOADED && !Globals.SAMPLE_LOADED) {
+            CommandScheduler.getInstance().schedule(new LoadClipCommand());
+        }
+
+
 
         if (driver.wasJustPressed(GamepadKeys.Button.A)) {
             robot.intake.setExtensionTarget(IntakeInverseKinematics.slideExtension);

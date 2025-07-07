@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.subsystem.ClipMech;
@@ -57,6 +58,7 @@ public class RobotHardware {
     public AnalogInput outtakeArmInput;
     public PIDFController outtakeArmPID;
     public Servo outtakeClawServo;
+    public NormalizedColorSensor outtakeColorSensor;
 
 
     private HardwareMap hardwareMap;
@@ -71,6 +73,7 @@ public class RobotHardware {
     public Drivetrain drivetrain;
     public ClipMech clipMech;
     public Outtake outtake;
+    public Globals globals;
 
 
     public IntakeInverseKinematics intakeIK;
@@ -190,6 +193,8 @@ public class RobotHardware {
 
         outtakeClawServo = hardwareMap.servo.get(RobotConstants.Outtake.outtakeClawServo);
         outtakeClawServo.setPosition(RobotConstants.Outtake.clawClosed);
+
+        outtakeColorSensor = hardwareMap.get(NormalizedColorSensor.class, RobotConstants.Outtake.outtakeColorSensor);
 
 
 
