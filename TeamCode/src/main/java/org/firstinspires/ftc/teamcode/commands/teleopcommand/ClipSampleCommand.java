@@ -9,6 +9,7 @@ import org.firstinspires.ftc.teamcode.commands.subsystemcommand.clipmechcommand.
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.outtakecommand.OuttakeArmCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.outtakecommand.OuttakeClawCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.outtakecommand.OuttakeSlideCommand;
+import org.firstinspires.ftc.teamcode.commands.subsystemcommand.outtakecommand.OuttakeStateCommand;
 import org.firstinspires.ftc.teamcode.subsystem.ClipMech;
 import org.firstinspires.ftc.teamcode.subsystem.Outtake;
 import org.firstinspires.ftc.teamcode.util.RobotConstants;
@@ -25,6 +26,12 @@ public class ClipSampleCommand extends SequentialCommandGroup {
                 new ClipPivotCommand(RobotConstants.ClipMech.clipPivotDown),
                 new WaitCommand(200),
                 new OuttakeArmCommand(RobotConstants.Outtake.armClipInter),
+                new WaitCommand(400),
+                new RailCommand(RobotConstants.ClipMech.railOutTheWay),
+                new ClipPivotCommand(RobotConstants.ClipMech.clipPivotOutTheWay),
+                new WaitCommand(400),
+                new OuttakeArmCommand(RobotConstants.Outtake.armChamberScoreReady),
+                new OuttakeStateCommand(Outtake.OuttakeState.SCORING_CHAMBER_INITIAL),
                 new ClipLoadedCommand(false)
         );
     }

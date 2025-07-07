@@ -11,8 +11,11 @@ import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.commands.teleopcommand.ClipSampleCommand;
 import org.firstinspires.ftc.teamcode.commands.teleopcommand.IntakeSampleCommand;
 import org.firstinspires.ftc.teamcode.commands.teleopcommand.LoadClipCommand;
+import org.firstinspires.ftc.teamcode.commands.teleopcommand.ScoreOnChamber;
+import org.firstinspires.ftc.teamcode.commands.teleopcommand.StowOuttakeSlides;
 import org.firstinspires.ftc.teamcode.commands.teleopcommand.TransferSampleCommand;
 import org.firstinspires.ftc.teamcode.subsystem.Intake;
+import org.firstinspires.ftc.teamcode.subsystem.Outtake;
 import org.firstinspires.ftc.teamcode.util.Globals;
 import org.firstinspires.ftc.teamcode.util.IntakeInverseKinematics;
 import org.firstinspires.ftc.teamcode.util.RobotConstants;
@@ -105,7 +108,7 @@ public class Cheesing extends CommandOpMode {
 
 
 
-        if (!Globals.CLIP_LOADED && !Globals.SAMPLE_LOADED) {
+        if (!Globals.CLIP_LOADED && !Globals.SAMPLE_LOADED && robot.outtake.getOuttakeState() == Outtake.OuttakeState.STOWED) {
             CommandScheduler.getInstance().schedule(new LoadClipCommand());
         }
 
@@ -139,6 +142,35 @@ public class Cheesing extends CommandOpMode {
 
         if (driver.wasJustPressed(GamepadKeys.Button.Y)) {
             robot.intake.resetSlides();
+        }
+
+        switch (robot.outtake.getOuttakeState()) {
+            case SCORING_CHAMBER_INITIAL:
+                if (operator.wasJustPressed(GamepadKeys.Button.A)) {
+                    CommandScheduler.getInstance().schedule(new ScoreOnChamber());
+                }
+
+                if (operator.wasJustPressed(GamepadKeys.Button.B)) {
+                    CommandScheduler.getInstance().schedule(new StowOuttakeSlides());
+                }
+
+                break;
+
+            case SCORING_CHAMBER_FINAL:
+                if (operator.wasJustPressed(GamepadKeys.Button.A)) {
+                    CommandScheduler.getInstance().schedule(new StowOuttakeSlides());
+                }
+
+                if (operator.wasJustPressed(GamepadKeys.Button.B)) {
+                    CommandScheduler.getInstance().schedule(new ScoreOnChamber());
+                }
+
+                break;
+
+            case STOWED:
+
+
+                break;
         }
     }
 

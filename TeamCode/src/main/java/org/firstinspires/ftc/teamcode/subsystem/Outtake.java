@@ -21,6 +21,12 @@ public class Outtake implements Subsystem {
         CLOSED, OPEN
     }
 
+    private OuttakeState outtakeState;
+
+    public enum OuttakeState {
+        SCORING_CHAMBER_INITIAL, SCORING_CHAMBER_FINAL, STOWED, TRANSFERRING
+    }
+
     public Outtake() {
         this.robot = RobotHardware.getInstance();
 
@@ -31,6 +37,14 @@ public class Outtake implements Subsystem {
     public void periodic() {
         powerSlides();
         updateArm();
+    }
+
+    public void setOuttakeState(OuttakeState outtakeState) {
+        this.outtakeState = outtakeState;
+    }
+
+    public OuttakeState getOuttakeState() {
+        return outtakeState;
     }
 
     public void setClawState(ClawState state) {

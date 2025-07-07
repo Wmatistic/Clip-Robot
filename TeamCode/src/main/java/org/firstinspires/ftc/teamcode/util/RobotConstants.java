@@ -92,6 +92,7 @@ public class RobotConstants {
         public static double clipPivotUp = 0.6;
         public static double clipPivotDown = 0.0;
         public static double clipPivotTransfer = 0.25;
+        public static double clipPivotOutTheWay = 0.15;
     }
 
     @Config
@@ -116,6 +117,7 @@ public class RobotConstants {
 
         public static int slideStowed = 0;
         public static int slideTransfer = 350;
+        public static int slideChamber = 450;
 
 
 
@@ -127,6 +129,9 @@ public class RobotConstants {
         public static double armStowed = 0.55;
         public static double armClip = -0.5;
         public static double armClipInter = 0.55;
+        public static double armChamberScoreReady = -1;
+        public static double armChamberScoreInitial = -2.0;
+        public static double armChamberScoreFinal = -1.8;
         public static double armTest = -1;
 
 
