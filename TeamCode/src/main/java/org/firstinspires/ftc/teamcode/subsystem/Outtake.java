@@ -12,6 +12,7 @@ public class Outtake implements Subsystem {
 
     private int slideTarget;
     private double armTarget;
+    private double prevArmPosition, armTurns;
 
     public static boolean slideReset = false;
 
@@ -30,8 +31,13 @@ public class Outtake implements Subsystem {
     public Outtake() {
         this.robot = RobotHardware.getInstance();
 
+        outtakeState = OuttakeState.STOWED;
+
         slideTarget = RobotConstants.Outtake.slideStowed;
         armTarget = RobotConstants.Outtake.armStowed;
+
+        this.prevArmPosition = getRealArmPosition();
+        this.armTurns = 0;
     }
 
     public void periodic() {
@@ -64,11 +70,13 @@ public class Outtake implements Subsystem {
     }
 
     public boolean isSample() {
-        NormalizedRGBA colors = robot.outtakeColorSensor.getNormalizedColors();
+        int red = robot.outtakeColorSensor.red();
+        int green = robot.outtakeColorSensor.green();
+        int blue = robot.outtakeColorSensor.blue();
 
-        return  colors.red < RobotConstants.Outtake.upperRed && colors.red > RobotConstants.Outtake.lowerRed &&
-                colors.green < RobotConstants.Outtake.upperGreen && colors.green > RobotConstants.Outtake.lowerGreen &&
-                colors.blue < RobotConstants.Outtake.upperBlue && colors.blue > RobotConstants.Outtake.lowerBlue;
+        return  red < RobotConstants.Outtake.upperRed && red > RobotConstants.Outtake.lowerRed ||
+                green < RobotConstants.Outtake.upperGreen && green > RobotConstants.Outtake.lowerGreen ||
+                blue < RobotConstants.Outtake.upperBlue && blue > RobotConstants.Outtake.lowerBlue;
     }
 
     public void updateArm() {
@@ -78,7 +86,25 @@ public class Outtake implements Subsystem {
     }
 
     public double getArmPosition() {
+        double position = getRealArmPosition();
+
+        if (prevArmPosition - position > 0.5) {
+            armTurns++;
+        } else if (prevArmPosition - position < -0.5) {
+            armTurns--;
+        }
+
+        prevArmPosition = position;
+
+        return position + armTurns;
+    }
+
+    public double getRealArmPosition() {
         return robot.outtakeArmInput.getVoltage() / 3.3;
+    }
+
+    public double getTurns() {
+        return armTurns;
     }
 
     public void setArmTarget(double armTarget) {

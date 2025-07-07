@@ -15,6 +15,12 @@ public class ClipMech implements Subsystem {
 
     private int currentClip;
 
+    private ClipMechState clipMechState;
+
+    public enum ClipMechState {
+        CLIPPING, STOWED
+    }
+
     public ClipMech() {
         this.robot = RobotHardware.getInstance();
 
@@ -25,12 +31,22 @@ public class ClipMech implements Subsystem {
         this.clipHolderTarget = RobotConstants.ClipMech.clipHolderStowed;
 
         this.currentClip = 1;
+
+        this.clipMechState = ClipMechState.STOWED;
     }
 
     @Override
     public void periodic() {
         updateRail();
         updateClipHolder();
+    }
+
+    public void setClipMechState(ClipMechState clipMechState) {
+        this.clipMechState = clipMechState;
+    }
+
+    public ClipMechState getClipMechState() {
+        return clipMechState;
     }
 
     private void updateRail() {
@@ -62,7 +78,7 @@ public class ClipMech implements Subsystem {
     }
 
     public double getRailPosition() {
-        double position = (robot.railServoInput.getVoltage() / 3.3);
+        double position = getRealRailPosition();
         if (prevRailPosition - position > 0.5) {
             railTurns++;
         } else if (prevRailPosition - position < -0.5) {

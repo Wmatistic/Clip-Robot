@@ -14,6 +14,7 @@ import org.firstinspires.ftc.teamcode.commands.teleopcommand.LoadClipCommand;
 import org.firstinspires.ftc.teamcode.commands.teleopcommand.ScoreOnChamber;
 import org.firstinspires.ftc.teamcode.commands.teleopcommand.StowOuttakeSlides;
 import org.firstinspires.ftc.teamcode.commands.teleopcommand.TransferSampleCommand;
+import org.firstinspires.ftc.teamcode.subsystem.ClipMech;
 import org.firstinspires.ftc.teamcode.subsystem.Intake;
 import org.firstinspires.ftc.teamcode.subsystem.Outtake;
 import org.firstinspires.ftc.teamcode.util.Globals;
@@ -63,6 +64,11 @@ public class Cheesing extends CommandOpMode {
                 .whenPressed(new ClipSampleCommand());
 
         targetedSample = new Sample(0,0,0);
+
+        robot.outtake.updateSample();
+
+        Globals.CLIP_MAGAZINES_LOADED = false;
+        Globals.CLIP_LOADED = false;
     }
 
     @Override
@@ -76,7 +82,7 @@ public class Cheesing extends CommandOpMode {
 
         telemetry.addData("Intake Slide Motor Power: ",robot.intakeSlideMotor.getPower());
         telemetry.addData("Intake Slide Motor Target", robot.intake.getExtensionTarget());
-        telemetry.addData("Turret Smth", robot.intake.getTurretPosition());
+        //telemetry.addData("Turret Smth", robot.intake.getTurretPosition());
         telemetry.addData("Intake IK Turret Angle", Double.isNaN(IntakeInverseKinematics.turretAngle));
         telemetry.addData("Intake IK Slide Extension", IntakeInverseKinematics.slideExtension);
         telemetry.addData("Slide Extension Inches", IntakeInverseKinematics.slideExtensionInches);
@@ -87,19 +93,18 @@ public class Cheesing extends CommandOpMode {
         telemetry.addData("Intake Slide Current: ", robot.intakeSlideMotor.getCurrent(CurrentUnit.AMPS));
         telemetry.addData("Intake Slide Reset: ", Intake.slideReset);
         telemetry.addData("Intake Sample Slide Check: ", Intake.slideSampleCheck);
-        telemetry.addData("Rail Servo Position: ", robot.clipMech.getRailPosition());
-        telemetry.addData("Rail Target Position: ", robot.clipMech.getRailTarget());
-        telemetry.addData("Rail Servo Power: ", robot.railServo.getPower());
-        telemetry.addData("Rail Turns: ", robot.clipMech.getTurns());
+//        telemetry.addData("Rail Servo Position: ", robot.clipMech.getRailPosition());
+//        telemetry.addData("Rail Target Position: ", robot.clipMech.getRailTarget());
+//        telemetry.addData("Rail Servo Power: ", robot.railServo.getPower());
+//        telemetry.addData("Rail Turns: ", robot.clipMech.getTurns());
+        telemetry.addData("Outtake Arm Position: ", robot.outtake.getRealArmPosition());
+        telemetry.addData("Outtake Arm Power: ", robot.outtakeArmServo.getPower());
+        telemetry.addData("Outtake Arm Turns: ", robot.outtake.getTurns());
         telemetry.update();
 
 
 
-        robot.outtake.updateSample();
-
-
-
-        robot.limelightClass.refreshSamples();
+        //robot.limelightClass.refreshSamples();
 
         if (robot.limelightClass.hasSamples()) {
             targetedSample = robot.limelightClass.getTargetedSample();
@@ -108,8 +113,15 @@ public class Cheesing extends CommandOpMode {
 
 
 
-        if (!Globals.CLIP_LOADED && !Globals.SAMPLE_LOADED && robot.outtake.getOuttakeState() == Outtake.OuttakeState.STOWED) {
+        if (operator.wasJustPressed(GamepadKeys.Button.X)) {
+            Globals.CLIP_MAGAZINES_LOADED = true;
+        }
+
+
+
+        if (!Globals.CLIP_LOADED && !Globals.SAMPLE_LOADED && robot.outtake.getOuttakeState() == Outtake.OuttakeState.STOWED && Globals.CLIP_MAGAZINES_LOADED && robot.clipMech.getClipMechState() == ClipMech.ClipMechState.STOWED) {
             CommandScheduler.getInstance().schedule(new LoadClipCommand());
+            robot.clipMech.setClipMechState(ClipMech.ClipMechState.CLIPPING);
         }
 
 
@@ -168,7 +180,9 @@ public class Cheesing extends CommandOpMode {
                 break;
 
             case STOWED:
-
+                if (operator.wasJustPressed(GamepadKeys.Button.A)) {
+                    robot.outtake.setArmTarget(RobotConstants.Outtake.armTest);
+                }
 
                 break;
         }

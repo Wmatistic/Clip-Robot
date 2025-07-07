@@ -7,6 +7,7 @@ import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -58,7 +59,7 @@ public class RobotHardware {
     public AnalogInput outtakeArmInput;
     public PIDFController outtakeArmPID;
     public Servo outtakeClawServo;
-    public NormalizedColorSensor outtakeColorSensor;
+    public ColorSensor outtakeColorSensor;
 
 
     private HardwareMap hardwareMap;
@@ -194,7 +195,7 @@ public class RobotHardware {
         outtakeClawServo = hardwareMap.servo.get(RobotConstants.Outtake.outtakeClawServo);
         outtakeClawServo.setPosition(RobotConstants.Outtake.clawClosed);
 
-        outtakeColorSensor = hardwareMap.get(NormalizedColorSensor.class, RobotConstants.Outtake.outtakeColorSensor);
+        outtakeColorSensor = hardwareMap.get(ColorSensor.class, RobotConstants.Outtake.outtakeColorSensor);
 
 
 

@@ -67,7 +67,7 @@ public class RobotConstants {
         public static double railD = 0.0;
         public static double railF = 0.0;
 
-        public static double railStowed = 0.95;
+        public static double railStowed = 0.05;
         public static double railClipping = 1.0;
         public static double railSecureClip = 0.8;
         public static double railOutTheWay = 1.3;
@@ -130,20 +130,20 @@ public class RobotConstants {
         public static double armClip = -0.5;
         public static double armClipInter = 0.55;
         public static double armChamberScoreReady = -1;
-        public static double armChamberScoreInitial = -2.0;
-        public static double armChamberScoreFinal = -1.8;
+        public static double armChamberScoreInitial = -1.6;
+        public static double armChamberScoreFinal = -1.4;
         public static double armTest = -1;
 
 
 
-        public static double clawClosed = 0.45;
+        public static double clawClosed = 0.48;
         public static double clawOpen = 0.25;
 
 
 
         // Color Sensor Values
-        public static int upperRed = 0;
-        public static int lowerRed = 0;
+        public static int upperRed = 1100;
+        public static int lowerRed = 600;
 
         public static int upperGreen = 0;
         public static int lowerGreen = 0;
