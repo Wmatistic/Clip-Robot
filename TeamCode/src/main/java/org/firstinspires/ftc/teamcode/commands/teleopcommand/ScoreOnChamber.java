@@ -15,9 +15,9 @@ public class ScoreOnChamber extends SequentialCommandGroup {
         super(
                 new OuttakeArmCommand(RobotConstants.Outtake.armChamberScoreReady),
                 new OuttakeSlideCommand(RobotConstants.Outtake.slideChamber),
-                new WaitCommand(500),
+                new WaitCommand(600),
                 new OuttakeArmCommand(RobotConstants.Outtake.armChamberScoreInitial),
-                new WaitCommand(200),
+                new WaitCommand(600),
                 new OuttakeArmCommand(RobotConstants.Outtake.armChamberScoreFinal),
                 new OuttakeStateCommand(Outtake.OuttakeState.SCORING_CHAMBER_FINAL)
         );

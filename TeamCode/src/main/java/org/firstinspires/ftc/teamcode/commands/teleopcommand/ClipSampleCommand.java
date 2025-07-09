@@ -4,6 +4,7 @@ import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.clipmechcommand.ClipLoadedCommand;
+import org.firstinspires.ftc.teamcode.commands.subsystemcommand.clipmechcommand.ClipMechStateCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.clipmechcommand.ClipPivotCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.clipmechcommand.RailCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.outtakecommand.OuttakeArmCommand;
@@ -27,12 +28,14 @@ public class ClipSampleCommand extends SequentialCommandGroup {
                 new WaitCommand(200),
                 new OuttakeArmCommand(RobotConstants.Outtake.armClipInter),
                 new WaitCommand(400),
+                new ClipPivotCommand(RobotConstants.ClipMech.clipPivotTransfer),
                 new RailCommand(RobotConstants.ClipMech.railOutTheWay),
                 new ClipPivotCommand(RobotConstants.ClipMech.clipPivotOutTheWay),
                 new WaitCommand(400),
                 new OuttakeArmCommand(RobotConstants.Outtake.armChamberScoreReady),
                 new OuttakeStateCommand(Outtake.OuttakeState.SCORING_CHAMBER_INITIAL),
-                new ClipLoadedCommand(false)
+                new ClipLoadedCommand(false),
+                new ClipMechStateCommand(ClipMech.ClipMechState.STOWED)
         );
     }
 }

@@ -32,10 +32,9 @@ public class TransferSampleCommand extends SequentialCommandGroup {
                 new TurretCommand(RobotConstants.Intake.turretTransfer),
                 new RailCommand(RobotConstants.ClipMech.railOutTheWay),
                 new ClipPivotCommand(RobotConstants.ClipMech.clipPivotTransfer),
-                new WaitCommand(500),
+                new WaitCommand(700),
                 new IntakeArmCommand(RobotConstants.Intake.armTransfer),
                 new ClawRotationCommand(RobotConstants.Intake.clawRotationTransfer),
-                new CheckForSampleCommand(),
                 new WaitCommand(500),
                 new IntakeClawCommand(Intake.ClawState.OPEN),
                 new WaitCommand(200),
@@ -48,7 +47,8 @@ public class TransferSampleCommand extends SequentialCommandGroup {
                 new OuttakeSlideCommand(RobotConstants.Outtake.slideStowed),
                 new WaitCommand(300),
                 new OuttakeClawCommand(Outtake.ClawState.CLOSED),
-                new OuttakeStateCommand(Outtake.OuttakeState.STOWED)
+                new OuttakeStateCommand(Outtake.OuttakeState.STOWED),
+                new CheckForSampleCommand()
         );
     }
 }

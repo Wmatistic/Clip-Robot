@@ -121,14 +121,14 @@ public class RobotConstants {
 
 
 
-        public static double armP = 1.0;
+        public static double armP = 2.0;
         public static double armI = 0.0;
         public static double armD = 0.0;
         public static double armF = 0.0;
 
-        public static double armStowed = 0.55;
+        public static double armStowed = 0.50;
         public static double armClip = -0.5;
-        public static double armClipInter = 0.55;
+        public static double armClipInter = 0.53;
         public static double armChamberScoreReady = -1;
         public static double armChamberScoreInitial = -1.6;
         public static double armChamberScoreFinal = -1.4;

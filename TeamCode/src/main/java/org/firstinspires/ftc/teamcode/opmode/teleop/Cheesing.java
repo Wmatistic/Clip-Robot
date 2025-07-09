@@ -8,6 +8,7 @@ import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
+import org.firstinspires.ftc.teamcode.commands.subsystemcommand.intakecommand.IntakeClawCommand;
 import org.firstinspires.ftc.teamcode.commands.teleopcommand.ClipSampleCommand;
 import org.firstinspires.ftc.teamcode.commands.teleopcommand.IntakeSampleCommand;
 import org.firstinspires.ftc.teamcode.commands.teleopcommand.LoadClipCommand;
@@ -49,21 +50,13 @@ public class Cheesing extends CommandOpMode {
 
         robot.limelight.start();
 
-        driver.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
-                .whenPressed(
-                        new SequentialCommandGroup(
-                                new TransferSampleCommand(),
-                                new ClipSampleCommand()
-                        )
-                );
-
         operator.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
                 .whenPressed(new LoadClipCommand());
 
         operator.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
                 .whenPressed(new ClipSampleCommand());
 
-        targetedSample = new Sample(0,0,0);
+        targetedSample = new Sample(0,0,0, 0);
 
         robot.outtake.updateSample();
 
@@ -104,7 +97,7 @@ public class Cheesing extends CommandOpMode {
 
 
 
-        //robot.limelightClass.refreshSamples();
+        robot.limelightClass.refreshSamples();
 
         if (robot.limelightClass.hasSamples()) {
             targetedSample = robot.limelightClass.getTargetedSample();
@@ -113,7 +106,7 @@ public class Cheesing extends CommandOpMode {
 
 
 
-        if (operator.wasJustPressed(GamepadKeys.Button.X)) {
+        if (driver.wasJustPressed(GamepadKeys.Button.X)) {
             Globals.CLIP_MAGAZINES_LOADED = true;
         }
 
@@ -124,32 +117,53 @@ public class Cheesing extends CommandOpMode {
             robot.clipMech.setClipMechState(ClipMech.ClipMechState.CLIPPING);
         }
 
+        if (Globals.CLIP_LOADED && Globals.SAMPLE_LOADED && robot.outtake.getOuttakeState() == Outtake.OuttakeState.STOWED && robot.clipMech.getClipMechState() == ClipMech.ClipMechState.STOWED) {
+            CommandScheduler.getInstance().schedule(new ClipSampleCommand());
+            robot.clipMech.setClipMechState(ClipMech.ClipMechState.CLIPPING);
+        }
 
 
-        if (driver.wasJustPressed(GamepadKeys.Button.A)) {
-            robot.intake.setExtensionTarget(IntakeInverseKinematics.slideExtension);
-            robot.intake.setTurretTarget(IntakeInverseKinematics.turretAngle);
-            robot.intakeArmServo.setPosition(RobotConstants.Intake.armIntake);
-            robot.clawRotationServo.setPosition(IntakeInverseKinematics.clawRotation);
-        }
-        if (driver.wasJustPressed(GamepadKeys.Button.B)) {
-            robot.intake.setExtensionTarget(RobotConstants.Intake.slideStowed);
-            robot.intake.setTurretTarget(RobotConstants.Intake.turretStowed);
-            robot.intakeArmServo.setPosition(RobotConstants.Intake.armStowed);
-            robot.clawRotationServo.setPosition(RobotConstants.Intake.clawRotationStowed);
-        }
+//
+//        if (driver.wasJustPressed(GamepadKeys.Button.A)) {
+//            robot.intake.setExtensionTarget(IntakeInverseKinematics.slideExtension);
+//            robot.intake.setTurretTarget(IntakeInverseKinematics.turretAngle);
+//            robot.intakeArmServo.setPosition(RobotConstants.Intake.armIntake);
+//            robot.clawRotationServo.setPosition(IntakeInverseKinematics.clawRotation);
+//        }
+//        if (driver.wasJustPressed(GamepadKeys.Button.B)) {
+//            robot.intake.setExtensionTarget(RobotConstants.Intake.slideStowed);
+//            robot.intake.setTurretTarget(RobotConstants.Intake.turretStowed);
+//            robot.intakeArmServo.setPosition(RobotConstants.Intake.armStowed);
+//            robot.clawRotationServo.setPosition(RobotConstants.Intake.clawRotationStowed);
+//        }
 
         if (driver.wasJustPressed(GamepadKeys.Button.RIGHT_BUMPER)) {
             CommandScheduler.getInstance().schedule(new IntakeSampleCommand());
         }
 
-        if (driver.wasJustPressed(GamepadKeys.Button.X)) {
-            Intake.slideSampleCheck = 200;
-            robot.intake.setExtensionTarget(0);
+        if (driver.wasJustPressed(GamepadKeys.Button.LEFT_BUMPER) && Globals.CLIP_LOADED && robot.outtake.getOuttakeState() == Outtake.OuttakeState.STOWED) {
+            CommandScheduler.getInstance().schedule(new TransferSampleCommand());
         }
+
+//        if (driver.wasJustPressed(GamepadKeys.Button.X)) {
+//            Intake.slideSampleCheck = 200;
+//            robot.intake.setExtensionTarget(0);
+//        }
 
         if (driver.wasJustPressed(GamepadKeys.Button.DPAD_RIGHT)) {
             robot.limelightClass.targetNextSample();
+        }
+
+        if (driver.wasJustPressed(GamepadKeys.Button.DPAD_UP)) {
+            robot.limelightClass.targetSampleColor(0);
+        }
+
+        if (driver.wasJustPressed(GamepadKeys.Button.DPAD_LEFT)) {
+            robot.limelightClass.targetSampleColor(1);
+        }
+
+        if (driver.wasJustPressed(GamepadKeys.Button.DPAD_DOWN)) {
+            robot.limelightClass.targetSampleColor(2);
         }
 
         if (driver.wasJustPressed(GamepadKeys.Button.Y)) {
@@ -158,31 +172,28 @@ public class Cheesing extends CommandOpMode {
 
         switch (robot.outtake.getOuttakeState()) {
             case SCORING_CHAMBER_INITIAL:
-                if (operator.wasJustPressed(GamepadKeys.Button.A)) {
+                if (driver.wasJustPressed(GamepadKeys.Button.A)) {
                     CommandScheduler.getInstance().schedule(new ScoreOnChamber());
                 }
 
-                if (operator.wasJustPressed(GamepadKeys.Button.B)) {
+                if (driver.wasJustPressed(GamepadKeys.Button.B)) {
                     CommandScheduler.getInstance().schedule(new StowOuttakeSlides());
                 }
 
                 break;
 
             case SCORING_CHAMBER_FINAL:
-                if (operator.wasJustPressed(GamepadKeys.Button.A)) {
+                if (driver.wasJustPressed(GamepadKeys.Button.A)) {
                     CommandScheduler.getInstance().schedule(new StowOuttakeSlides());
                 }
 
-                if (operator.wasJustPressed(GamepadKeys.Button.B)) {
+                if (driver.wasJustPressed(GamepadKeys.Button.B)) {
                     CommandScheduler.getInstance().schedule(new ScoreOnChamber());
                 }
 
                 break;
 
             case STOWED:
-                if (operator.wasJustPressed(GamepadKeys.Button.A)) {
-                    robot.outtake.setArmTarget(RobotConstants.Outtake.armTest);
-                }
 
                 break;
         }

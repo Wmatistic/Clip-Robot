@@ -23,6 +23,7 @@ public class StowOuttakeSlides extends SequentialCommandGroup {
                 new WaitCommand(700),
                 new OuttakeClawCommand(Outtake.ClawState.CLOSED),
                 new OuttakeSlideCommand(RobotConstants.Outtake.slideStowed),
+                new WaitCommand(600),
                 new OuttakeStateCommand(Outtake.OuttakeState.STOWED),
                 new CheckForSampleCommand()
         );
