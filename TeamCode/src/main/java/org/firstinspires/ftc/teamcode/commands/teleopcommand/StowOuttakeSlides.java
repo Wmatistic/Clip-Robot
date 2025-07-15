@@ -12,15 +12,16 @@ import org.firstinspires.ftc.teamcode.commands.subsystemcommand.outtakecommand.O
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.outtakecommand.OuttakeStateCommand;
 import org.firstinspires.ftc.teamcode.subsystem.Outtake;
 import org.firstinspires.ftc.teamcode.util.RobotConstants;
+import org.firstinspires.ftc.teamcode.util.RobotHardware;
 
 public class StowOuttakeSlides extends SequentialCommandGroup {
     public StowOuttakeSlides() {
         super(
-                new RailCommand(RobotConstants.ClipMech.railOutTheWay),
+                new RailCommand(RobotHardware.getInstance().clipMech.getOutTheWayPosition()),
                 new ClipPivotCommand(RobotConstants.ClipMech.clipPivotOutTheWay),
                 new OuttakeClawCommand(Outtake.ClawState.OPEN),
                 new OuttakeArmCommand(RobotConstants.Outtake.armStowed),
-                new WaitCommand(700),
+                new WaitCommand(900),
                 new OuttakeClawCommand(Outtake.ClawState.CLOSED),
                 new OuttakeSlideCommand(RobotConstants.Outtake.slideStowed),
                 new WaitCommand(600),

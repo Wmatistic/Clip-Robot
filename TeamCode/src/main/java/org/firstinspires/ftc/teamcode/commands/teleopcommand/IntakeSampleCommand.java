@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.commands.teleopcommand;
 
+import com.arcrobotics.ftclib.command.ConditionalCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 
@@ -7,11 +8,12 @@ import org.firstinspires.ftc.teamcode.commands.subsystemcommand.intakecommand.In
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.intakecommand.IntakeClawCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.intakecommand.ClawRotationCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.intakecommand.IntakeSlideCommand;
-import org.firstinspires.ftc.teamcode.commands.subsystemcommand.intakecommand.SlideExtendCheckCommand;
+import org.firstinspires.ftc.teamcode.commands.subsystemcommand.intakecommand.SetSlideExtendCheckCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.intakecommand.TurretCommand;
 import org.firstinspires.ftc.teamcode.subsystem.Intake;
 import org.firstinspires.ftc.teamcode.util.IntakeInverseKinematics;
 import org.firstinspires.ftc.teamcode.util.RobotConstants;
+import org.firstinspires.ftc.teamcode.util.RobotHardware;
 
 public class IntakeSampleCommand extends SequentialCommandGroup {
     public IntakeSampleCommand() {
@@ -23,9 +25,13 @@ public class IntakeSampleCommand extends SequentialCommandGroup {
                 new IntakeArmCommand(RobotConstants.Intake.armIntake),
                 new ClawRotationCommand(IntakeInverseKinematics.clawRotation),
                 new WaitCommand(500),
-                new IntakeClawCommand(Intake.ClawState.CLOSED),
+                new ConditionalCommand(
+                        new IntakeClawCommand(Intake.ClawState.CLOSED),
+                        new IntakeClawCommand(Intake.ClawState.OPEN),
+                        () -> RobotHardware.getInstance().intake.isSample()
+                ),
                 new WaitCommand(200),
-                new SlideExtendCheckCommand(0),
+                new SetSlideExtendCheckCommand(0),
                 new ClawRotationCommand(RobotConstants.Intake.clawRotationStowed),
                 new IntakeArmCommand(RobotConstants.Intake.armStowed),
                 new WaitCommand(200),

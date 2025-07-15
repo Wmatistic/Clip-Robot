@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.commands.teleopcommand;
 
-import com.arcrobotics.ftclib.command.Robot;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 
@@ -17,10 +16,10 @@ import org.firstinspires.ftc.teamcode.commands.subsystemcommand.outtakecommand.O
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.outtakecommand.OuttakeClawCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.outtakecommand.OuttakeSlideCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.outtakecommand.OuttakeStateCommand;
-import org.firstinspires.ftc.teamcode.subsystem.ClipMech;
 import org.firstinspires.ftc.teamcode.subsystem.Intake;
 import org.firstinspires.ftc.teamcode.subsystem.Outtake;
 import org.firstinspires.ftc.teamcode.util.RobotConstants;
+import org.firstinspires.ftc.teamcode.util.RobotHardware;
 
 public class TransferSampleCommand extends SequentialCommandGroup {
     public TransferSampleCommand() {
@@ -30,7 +29,7 @@ public class TransferSampleCommand extends SequentialCommandGroup {
                 new OuttakeStateCommand(Outtake.OuttakeState.TRANSFERRING),
                 new OuttakeSlideCommand(RobotConstants.Outtake.slideTransfer),
                 new TurretCommand(RobotConstants.Intake.turretTransfer),
-                new RailCommand(RobotConstants.ClipMech.railOutTheWay),
+                new RailCommand(RobotHardware.getInstance().clipMech.getOutTheWayPosition()),
                 new ClipPivotCommand(RobotConstants.ClipMech.clipPivotTransfer),
                 new WaitCommand(700),
                 new IntakeArmCommand(RobotConstants.Intake.armTransfer),
@@ -45,6 +44,11 @@ public class TransferSampleCommand extends SequentialCommandGroup {
                 new OuttakeClawCommand(Outtake.ClawState.OPEN),
                 new OuttakeArmCommand(RobotConstants.Outtake.armStowed),
                 new OuttakeSlideCommand(RobotConstants.Outtake.slideStowed),
+                new WaitCommand(300),
+                new OuttakeClawCommand(Outtake.ClawState.CLOSED),
+                new WaitCommand(200),
+                new OuttakeClawCommand(Outtake.ClawState.OPEN),
+                new OuttakeArmCommand(RobotConstants.Outtake.armStowed + 0.4),
                 new WaitCommand(300),
                 new OuttakeClawCommand(Outtake.ClawState.CLOSED),
                 new OuttakeStateCommand(Outtake.OuttakeState.STOWED),

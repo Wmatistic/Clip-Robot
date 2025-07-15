@@ -11,14 +11,15 @@ public class Intake implements Subsystem {
     private final RobotHardware robot;
     private double turretTarget;
     private ClawState clawState;
+    private IntakeState intakeState;
     private int target, prevTarget;
 
     public static boolean slideReset = false;
 
-    public static int slideSampleCheck;
+    private int slideSampleCheck;
 
     public enum IntakeState {
-        INTAKING, TRANSFERRING, STOWED
+        INTAKING, TRANSFERRING, STOWED, INTAKING_CHAMBER_1, INTAKING_CHAMBER_2, INTAKING_CHAMBER_3
     }
 
     public enum ClawState {
@@ -52,6 +53,24 @@ public class Intake implements Subsystem {
     public void periodic() {
         updateTurret();
         powerSlides();
+    }
+
+    public boolean isSample() {
+        int red = robot.intakeColorSensor.red();
+        int green = robot.intakeColorSensor.green();
+        int blue = robot.intakeColorSensor.blue();
+
+        return  red < RobotConstants.Intake.upperRed && red > RobotConstants.Intake.lowerRed ||
+                green < RobotConstants.Intake.upperGreen && green > RobotConstants.Intake.lowerGreen ||
+                blue < RobotConstants.Intake.upperBlue && blue > RobotConstants.Intake.lowerBlue;
+    }
+
+    public int getSlideSampleCheck() {
+        return slideSampleCheck;
+    }
+
+    public void setSlideSampleCheck(int slideSampleCheck) {
+        this.slideSampleCheck = slideSampleCheck;
     }
 
     public void setExtensionTarget(int position) {

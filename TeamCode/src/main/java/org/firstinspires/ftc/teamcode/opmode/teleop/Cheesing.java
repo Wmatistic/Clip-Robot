@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmode.teleop;
 
+import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
@@ -50,12 +51,6 @@ public class Cheesing extends CommandOpMode {
 
         robot.limelight.start();
 
-        operator.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
-                .whenPressed(new LoadClipCommand());
-
-        operator.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
-                .whenPressed(new ClipSampleCommand());
-
         targetedSample = new Sample(0,0,0, 0);
 
         robot.outtake.updateSample();
@@ -85,16 +80,35 @@ public class Cheesing extends CommandOpMode {
         telemetry.addData("Sample Rotation: ", targetedSample.r);
         telemetry.addData("Intake Slide Current: ", robot.intakeSlideMotor.getCurrent(CurrentUnit.AMPS));
         telemetry.addData("Intake Slide Reset: ", Intake.slideReset);
-        telemetry.addData("Intake Sample Slide Check: ", Intake.slideSampleCheck);
+        telemetry.addData("Intake Sample Slide Check: ", robot.intake.getSlideSampleCheck());
+        telemetry.addData("Intake Slide Target: ", robot.intake.getExtensionTarget());
+        telemetry.addData("Intake Slide Position: ", robot.intakeSlideMotor.getCurrentPosition());
 //        telemetry.addData("Rail Servo Position: ", robot.clipMech.getRailPosition());
 //        telemetry.addData("Rail Target Position: ", robot.clipMech.getRailTarget());
 //        telemetry.addData("Rail Servo Power: ", robot.railServo.getPower());
 //        telemetry.addData("Rail Turns: ", robot.clipMech.getTurns());
-        telemetry.addData("Outtake Arm Position: ", robot.outtake.getRealArmPosition());
-        telemetry.addData("Outtake Arm Power: ", robot.outtakeArmServo.getPower());
-        telemetry.addData("Outtake Arm Turns: ", robot.outtake.getTurns());
+//        telemetry.addData("Outtake Arm Position: ", robot.outtake.getRealArmPosition());
+//        telemetry.addData("Outtake Arm Power: ", robot.outtakeArmServo.getPower());
+//        telemetry.addData("Outtake Arm Turns: ", robot.outtake.getTurns());
+//        telemetry.addData("Left Clip Magazine Position: ", robot.clipMech.getRealLeftClipMagazinePosition());
+//        telemetry.addData("Left Clip Magazine Power: ", robot.clipMagazineLeftServo.getPower());
+//        telemetry.addData("Left Clip Magazine Turns: ", robot.clipMech.getLeftClipHolderTurns());
+//        telemetry.addData("Right Clip Magazine Position: ", robot.clipMech.getRealRightClipMagazinePosition());
+//        telemetry.addData("Right Clip Magazine Power: ", robot.clipMagazineRightServo.getPower());
+//        telemetry.addData("Right Clip Magazine Turns: ", robot.clipMech.getRightClipHolderTurns());
+        telemetry.addData("Intake Color Sensor Red: ", robot.intakeColorSensor.red());
+        telemetry.addData("Intake Color Sensor Green: ", robot.intakeColorSensor.green());
+        telemetry.addData("Intake Color Sensor Blue: ", robot.intakeColorSensor.blue());
+        telemetry.addData("Current Clip: ", robot.clipMech.getCurrentClip());
         telemetry.update();
 
+        if (operator.wasJustPressed(GamepadKeys.Button.LEFT_BUMPER)) {
+            CommandScheduler.getInstance().schedule(new LoadClipCommand());
+        }
+
+        if (operator.wasJustPressed(GamepadKeys.Button.RIGHT_BUMPER)) {
+            CommandScheduler.getInstance().schedule(new ClipSampleCommand());
+        }
 
 
         robot.limelightClass.refreshSamples();

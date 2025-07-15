@@ -9,27 +9,30 @@ import org.firstinspires.ftc.teamcode.commands.subsystemcommand.clipmechcommand.
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.clipmechcommand.RailCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.outtakecommand.OuttakeArmCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.outtakecommand.OuttakeClawCommand;
-import org.firstinspires.ftc.teamcode.commands.subsystemcommand.outtakecommand.OuttakeSlideCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.outtakecommand.OuttakeStateCommand;
 import org.firstinspires.ftc.teamcode.subsystem.ClipMech;
 import org.firstinspires.ftc.teamcode.subsystem.Outtake;
 import org.firstinspires.ftc.teamcode.util.RobotConstants;
+import org.firstinspires.ftc.teamcode.util.RobotHardware;
 
 public class ClipSampleCommand extends SequentialCommandGroup {
     public ClipSampleCommand() {
         super(
                 new ClipPivotCommand(RobotConstants.ClipMech.clipPivotUp),
-                new RailCommand(RobotConstants.ClipMech.railClipping),
+                new RailCommand(RobotHardware.getInstance().clipMech.getClippingPosition()),
                 new WaitCommand(400),
                 new OuttakeClawCommand(Outtake.ClawState.CLOSED),
                 new OuttakeArmCommand(RobotConstants.Outtake.armClip),
                 new WaitCommand(300),
                 new ClipPivotCommand(RobotConstants.ClipMech.clipPivotDown),
                 new WaitCommand(200),
+                new OuttakeClawCommand(Outtake.ClawState.OPEN),
                 new OuttakeArmCommand(RobotConstants.Outtake.armClipInter),
-                new WaitCommand(400),
+                new WaitCommand(600),
+                new OuttakeClawCommand(Outtake.ClawState.CLOSED),
                 new ClipPivotCommand(RobotConstants.ClipMech.clipPivotTransfer),
-                new RailCommand(RobotConstants.ClipMech.railOutTheWay),
+                new RailCommand(RobotHardware.getInstance().clipMech.getOutTheWayPosition()),
+                new WaitCommand(400),
                 new ClipPivotCommand(RobotConstants.ClipMech.clipPivotOutTheWay),
                 new WaitCommand(400),
                 new OuttakeArmCommand(RobotConstants.Outtake.armChamberScoreReady),

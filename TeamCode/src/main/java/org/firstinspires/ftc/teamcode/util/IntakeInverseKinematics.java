@@ -5,15 +5,10 @@ public class IntakeInverseKinematics {
     public static int slideExtension = RobotConstants.Intake.slideStowed;
     public static double clawRotation = RobotConstants.Intake.clawRotationStowed;
     public static double slideExtensionInches = 0.0;
-    public static int slideOffset = 0;
     public static double turretAngleDeg = 0.0;
-    public static double turretOffset = 0.11;
-    public static double clawRotationOffset = -0.1;
-
-    public static double intakeXOffset = -5.199;
 
     public static void calculateIK(double x, double y, double r) {
-        x += intakeXOffset;
+        x += RobotConstants.IntakeIK.intakeXOffset;
         turretAngleDeg = getIKTurretAngleDeg(x, y);
         turretAngle = getIKTurretAngle(x, y);
         slideExtension = getIKSlideExtension(x, y);
@@ -22,13 +17,13 @@ public class IntakeInverseKinematics {
     }
 
     public static double getClawRotation(double r) {
-        return (r + clawRotationOffset) / 180;
+        return (r + RobotConstants.IntakeIK.clawRotationOffset) / 180;
     }
 
     public static double getIKTurretAngle(double x, double y) {
         double temp = Math.toDegrees(Math.acos(x / RobotConstants.Intake.armLength));
         temp = ((temp) + 90) / 360;
-        temp += turretOffset;
+        temp += RobotConstants.IntakeIK.turretOffset;
         return temp;
     }
 
@@ -48,7 +43,7 @@ public class IntakeInverseKinematics {
     public static int inchesToMotorTicks(double inches) {
         int result = (int) (inches / .024);
 
-        result -= slideOffset;
+        result *= RobotConstants.IntakeIK.slideOffset;
 
         return result;
     }

@@ -13,7 +13,6 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
-import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.subsystem.ClipMech;
@@ -34,6 +33,7 @@ public class RobotHardware {
     public Servo clawRotationServo;
     public DcMotorEx intakeSlideMotor;
     public PIDFController intakeSlidePID;
+    public ColorSensor intakeColorSensor;
 
     // Drivetrain
     public DcMotorEx leftFront, leftRear, rightFront, rightRear;
@@ -46,11 +46,14 @@ public class RobotHardware {
     public CRServo railServo;
     public AnalogInput railServoInput;
     public PIDFController railPID;
-    public CRServo clipHolderServo;
-    public AnalogInput clipHolderServoInput;
-    public PIDFController clipHolderPID;
+    public CRServo clipMagazineLeftServo;
+    public AnalogInput clipMagazineLeftServoInput;
+    public Servo clipMagazineLeftClawServo;
+    public CRServo clipMagazineRightServo;
+    public AnalogInput clipMagazineRightServoInput;
+    public Servo clipMagazineRightClawServo;
+    public PIDFController clipMagazinePID;
     public Servo clipPivotServo;
-    public Servo clipHolderClawServo;
 
     // Outtake
     public DcMotorEx outtakeMotorOne, outtakeMotorTwo, outtakeMotorThree;
@@ -117,6 +120,8 @@ public class RobotHardware {
         intakeSlidePID = new PIDFController(RobotConstants.Intake.slideP, RobotConstants.Intake.slideI, RobotConstants.Intake.slideD, RobotConstants.Intake.slideF);
         intakeSlideMotor.setPower(0);
 
+        this.intakeColorSensor = hardwareMap.get(ColorSensor.class, RobotConstants.Intake.intakeColorSensor);
+
 
 
         // ******************* DRIVETRAIN ******************* //
@@ -130,8 +135,8 @@ public class RobotHardware {
 
         imu = hardwareMap.get(IMU.class, "imu");
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-                RevHubOrientationOnRobot.LogoFacingDirection.RIGHT,
-                RevHubOrientationOnRobot.UsbFacingDirection.UP
+                RevHubOrientationOnRobot.LogoFacingDirection.DOWN,
+                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD
         ));
         imu.initialize(parameters);
         imu.resetYaw();
@@ -150,15 +155,22 @@ public class RobotHardware {
         this.railServoInput = hardwareMap.get(AnalogInput.class, RobotConstants.ClipMech.railServoInput);
         this.railPID = new PIDFController(RobotConstants.ClipMech.railP, RobotConstants.ClipMech.railI, RobotConstants.ClipMech.railD, RobotConstants.ClipMech.railF);
 
-        this.clipHolderServo = hardwareMap.crservo.get(RobotConstants.ClipMech.clipHolderServo);
-        this.clipHolderServoInput = hardwareMap.get(AnalogInput.class, RobotConstants.ClipMech.clipHolderServoInput);
-        this.clipHolderPID = new PIDFController(RobotConstants.ClipMech.clipHolderP, RobotConstants.ClipMech.clipHolderI, RobotConstants.ClipMech.clipHolderD, RobotConstants.ClipMech.clipHolderF);
+        this.clipMagazineLeftServo = hardwareMap.crservo.get(RobotConstants.ClipMech.clipMagazineLeftServo);
+        this.clipMagazineLeftServoInput = hardwareMap.get(AnalogInput.class, RobotConstants.ClipMech.clipMagazineLeftServoInput);
+
+        this.clipMagazineRightServo = hardwareMap.crservo.get(RobotConstants.ClipMech.clipMagazineRightServo);
+        this.clipMagazineRightServoInput = hardwareMap.get(AnalogInput.class, RobotConstants.ClipMech.clipMagazineRightServoInput);
+
+        this.clipMagazinePID = new PIDFController(RobotConstants.ClipMech.clipMagazineP, RobotConstants.ClipMech.clipMagazineI, RobotConstants.ClipMech.clipMagazineD, RobotConstants.ClipMech.clipMagazineF);
+
+        this.clipMagazineLeftClawServo = hardwareMap.servo.get(RobotConstants.ClipMech.clipMagazineLeftClawServo);
+        this.clipMagazineLeftClawServo.setPosition(RobotConstants.ClipMech.clipMagazineClawClosed);
+
+        this.clipMagazineRightClawServo = hardwareMap.servo.get(RobotConstants.ClipMech.clipMagazineRightClawServo);
+        this.clipMagazineRightClawServo.setPosition(RobotConstants.ClipMech.clipMagazineClawClosed);
 
         this.clipPivotServo = hardwareMap.servo.get(RobotConstants.ClipMech.clipPivotServo);
         this.clipPivotServo.setPosition(RobotConstants.ClipMech.clipPivotTransfer);
-
-        this.clipHolderClawServo = hardwareMap.servo.get(RobotConstants.ClipMech.clipHolderClawServo);
-        this.clipHolderClawServo.setPosition(RobotConstants.ClipMech.clipHolderClawClosed);
 
 
 

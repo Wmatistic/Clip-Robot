@@ -17,8 +17,8 @@ public class Drivetrain implements Subsystem {
     }
 
     public void periodic() {
-        double y = -robot.driver.getLeftY();
-        double x = -robot.driver.getLeftX() * 1.1;
+        y = robot.driver.getLeftY();
+        x = robot.driver.getLeftX() * 1.1;
         rx = robot.driver.getRightX() * 1.1;
 
         heading = robot.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
