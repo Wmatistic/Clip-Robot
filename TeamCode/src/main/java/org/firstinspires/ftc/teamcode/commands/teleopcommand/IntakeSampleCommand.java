@@ -19,17 +19,13 @@ public class IntakeSampleCommand extends SequentialCommandGroup {
     public IntakeSampleCommand() {
         super(
                 new IntakeClawCommand(Intake.ClawState.OPEN),
-                new IntakeSlideCommand(IntakeInverseKinematics.slideExtension),
+                new IntakeSlideCommand(IntakeInverseKinematics.slideExtension + RobotHardware.getInstance().intake.getExtensionTarget()),
                 new TurretCommand(IntakeInverseKinematics.turretAngle),
-                new WaitCommand(500),
+                new WaitCommand(1000),
                 new IntakeArmCommand(RobotConstants.Intake.armIntake),
                 new ClawRotationCommand(IntakeInverseKinematics.clawRotation),
                 new WaitCommand(500),
-                new ConditionalCommand(
-                        new IntakeClawCommand(Intake.ClawState.CLOSED),
-                        new IntakeClawCommand(Intake.ClawState.OPEN),
-                        () -> RobotHardware.getInstance().intake.isSample()
-                ),
+                new IntakeClawCommand(Intake.ClawState.CLOSED),
                 new WaitCommand(200),
                 new SetSlideExtendCheckCommand(0),
                 new ClawRotationCommand(RobotConstants.Intake.clawRotationStowed),

@@ -20,25 +20,29 @@ public class RobotConstants {
         public static double slideI = 0.003;
         public static double slideD = 0.0;
         public static double slideF = 0.0;
+        public static double slideResetAmpThreshold = 5.5;
         public static int slideMax = 450;
         public static int slideStowed = 0;
 
-        public static double turretP = 1.5;
-        public static double turretI = 0.01;
+        public static double turretP = 2;
+        public static double turretI = 0.5;
         public static double turretD = 0.0;
         public static double turretF = 0.0;
         public static double turretStowed = 0.37;
-        public static double turretTransfer = 0.110;
+        public static double turretTransfer = 0.1;
+        public static double turretChamber = 0.45;
 
         public static double armStowed = 0.05;
         public static double armIntake = 0.9;
         public static double armTransfer = 0.5;
+        public static double armChamber = 0.6;
 
-        public static double clawOpen = 0.5;
-        public static double clawClosed = 0.0;
+        public static double clawOpen = 0.0;
+        public static double clawClosed = 0.55;
 
         public static double clawRotationStowed = 0.0;
         public static double clawRotationTransfer = 0.6;
+        public static double clawRotationChamber = 0.4;
 
         // Color Sensor Values
         public static int upperRed = 1100;
@@ -54,8 +58,8 @@ public class RobotConstants {
     @Config
     public static class IntakeIK {
         public static double slideOffset = 0.8;
-        public static double turretOffset = 0.12;
-        public static double clawRotationOffset = -0.1;
+        public static double turretOffset = 1.15;
+        public static double clawRotationOffset = -0.17;
         public static double intakeXOffset = -5.199;
     }
 
@@ -92,7 +96,7 @@ public class RobotConstants {
         // Rail Positions are relative to rail, left and right are based on rail not clip holder
         public static double railStowed = 0.05;
         public static double railClippingRight = 1.0;
-        public static double railClippingLeft = 0.25;
+        public static double railClippingLeft = 0.26;
         public static double railSecureClipLeft = 0.60;
         public static double railSecureClipRight = 0.55;
         public static double railOutTheWayRight = 1.3;
@@ -113,7 +117,7 @@ public class RobotConstants {
         public static double clipMagazineF = 0.0;
 
         public static double clipMagazineStowed = 0.1;
-        public static double clipMagazineTransfer = 0.63;
+        public static double clipMagazineTransfer = 0.65;
 
         public static double clipMagazineClawClosed = 0.0;
         public static double clipMagazineClawOpen = 0.7;
@@ -123,6 +127,7 @@ public class RobotConstants {
         public static double clipPivotDown = 0.0;
         public static double clipPivotTransfer = 0.25;
         public static double clipPivotOutTheWay = 0.15;
+        public static double clipPivotPullOut  = 0.35;
     }
 
     @Config
@@ -148,7 +153,7 @@ public class RobotConstants {
         public static int slideStowed = 0;
         public static int slideTransfer = 350;
         public static int slideChamber = 350;
-        public static int slideChamberScoring = 200;
+        public static int slideChamberScoring = 100;
 
 
 
@@ -157,12 +162,12 @@ public class RobotConstants {
         public static double armD = 0.0;
         public static double armF = 0.0;
 
-        public static double armStowed = 0.53;
+        public static double armStowed = 0.5;
         public static double armClip = -0.5;
         public static double armClipInter = 0.3;
         public static double armChamberScoreReady = 0.4;
         public static double armChamberScoreInitial = -0.2;
-        public static double armChamberScoreFinal = -0;
+        public static double armChamberScoreFinal = 0.2;
         public static double armTest = -1;
 
 
@@ -173,13 +178,13 @@ public class RobotConstants {
 
 
         // Color Sensor Values
-        public static int upperRed = 1100;
+        public static int upperRed = 2000;
         public static int lowerRed = 300;
 
         public static int upperGreen = 0;
         public static int lowerGreen = 0;
 
-        public static int upperBlue = 0;
-        public static int lowerBlue = 0;
+        public static int upperBlue = 2000;
+        public static int lowerBlue = 300;
     }
 }

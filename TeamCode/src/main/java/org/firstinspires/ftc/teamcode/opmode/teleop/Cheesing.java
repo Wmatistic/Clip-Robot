@@ -6,11 +6,13 @@ import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
+import com.arcrobotics.ftclib.gamepad.TriggerReader;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.intakecommand.IntakeClawCommand;
 import org.firstinspires.ftc.teamcode.commands.teleopcommand.ClipSampleCommand;
+import org.firstinspires.ftc.teamcode.commands.teleopcommand.IntakeSampleChamberCommand;
 import org.firstinspires.ftc.teamcode.commands.teleopcommand.IntakeSampleCommand;
 import org.firstinspires.ftc.teamcode.commands.teleopcommand.LoadClipCommand;
 import org.firstinspires.ftc.teamcode.commands.teleopcommand.ScoreOnChamber;
@@ -24,6 +26,8 @@ import org.firstinspires.ftc.teamcode.util.IntakeInverseKinematics;
 import org.firstinspires.ftc.teamcode.util.RobotConstants;
 import org.firstinspires.ftc.teamcode.util.RobotHardware;
 import org.firstinspires.ftc.teamcode.util.Sample;
+
+import java.util.Arrays;
 
 // TODO:
 //  1. fix isNaN error from being included in detected samples array
@@ -96,9 +100,12 @@ public class Cheesing extends CommandOpMode {
 //        telemetry.addData("Right Clip Magazine Position: ", robot.clipMech.getRealRightClipMagazinePosition());
 //        telemetry.addData("Right Clip Magazine Power: ", robot.clipMagazineRightServo.getPower());
 //        telemetry.addData("Right Clip Magazine Turns: ", robot.clipMech.getRightClipHolderTurns());
-        telemetry.addData("Intake Color Sensor Red: ", robot.intakeColorSensor.red());
-        telemetry.addData("Intake Color Sensor Green: ", robot.intakeColorSensor.green());
-        telemetry.addData("Intake Color Sensor Blue: ", robot.intakeColorSensor.blue());
+        //telemetry.addData("Intake Color Sensor Red: ", robot.intakeColorSensor.red());
+        //telemetry.addData("Intake Color Sensor Green: ", robot.intakeColorSensor.green());
+        //telemetry.addData("Intake Color Sensor Blue: ", robot.intakeColorSensor.blue());
+        telemetry.addData("Outtake Color Sensor Red: ", robot.outtakeColorSensor.red());
+        telemetry.addData("Outtake Color Sensor Green: ", robot.outtakeColorSensor.green());
+        telemetry.addData("Outtake Color Sensor Blue: ", robot.outtakeColorSensor.blue());
         telemetry.addData("Current Clip: ", robot.clipMech.getCurrentClip());
         telemetry.update();
 
@@ -110,8 +117,9 @@ public class Cheesing extends CommandOpMode {
             CommandScheduler.getInstance().schedule(new ClipSampleCommand());
         }
 
+        robot.outtake.resetSlides(operator.getButton(GamepadKeys.Button.DPAD_DOWN));
 
-        robot.limelightClass.refreshSamples();
+        //robot.limelightClass.refreshSamples();
 
         if (robot.limelightClass.hasSamples()) {
             targetedSample = robot.limelightClass.getTargetedSample();
@@ -155,13 +163,27 @@ public class Cheesing extends CommandOpMode {
             CommandScheduler.getInstance().schedule(new IntakeSampleCommand());
         }
 
+        if (driver.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.2) {
+            if (robot.intake.getIntakeState() == Intake.IntakeState.STOWED) {
+                robot.intake.setIntakeState(Intake.IntakeState.INTAKING_CHAMBER_1);
+            }
+
+            CommandScheduler.getInstance().schedule(new IntakeSampleChamberCommand());
+        }
+
+        if (driver.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.2 && robot.intake.getIntakeState() == Intake.IntakeState.INTAKING_CHAMBER_2) {
+            robot.intake.setIntakeState(Intake.IntakeState.INTAKING_CHAMBER_3);
+
+            CommandScheduler.getInstance().schedule(new IntakeSampleChamberCommand());
+        }
+
         if (driver.wasJustPressed(GamepadKeys.Button.LEFT_BUMPER) && Globals.CLIP_LOADED && robot.outtake.getOuttakeState() == Outtake.OuttakeState.STOWED) {
             CommandScheduler.getInstance().schedule(new TransferSampleCommand());
         }
 
 //        if (driver.wasJustPressed(GamepadKeys.Button.X)) {
-//            Intake.slideSampleCheck = 200;
-//            robot.intake.setExtensionTarget(0);
+//            robot.intake.setSlideSampleCheck(-50);
+//            robot.intake.setExtensionTarget(IntakeInverseKinematics.slideExtension);
 //        }
 
         if (driver.wasJustPressed(GamepadKeys.Button.DPAD_RIGHT)) {
@@ -170,14 +192,17 @@ public class Cheesing extends CommandOpMode {
 
         if (driver.wasJustPressed(GamepadKeys.Button.DPAD_UP)) {
             robot.limelightClass.targetSampleColor(0);
+            robot.limelightClass.refreshSamples();
         }
 
         if (driver.wasJustPressed(GamepadKeys.Button.DPAD_LEFT)) {
             robot.limelightClass.targetSampleColor(1);
+            robot.limelightClass.refreshSamples();
         }
 
         if (driver.wasJustPressed(GamepadKeys.Button.DPAD_DOWN)) {
             robot.limelightClass.targetSampleColor(2);
+            robot.limelightClass.refreshSamples();
         }
 
         if (driver.wasJustPressed(GamepadKeys.Button.Y)) {

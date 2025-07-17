@@ -48,18 +48,25 @@ public class Limelight {
     }
 
     public void refreshSamples() {
+        targetedSampleIndex = 0;
         samples.clear();
+
+        double[] sampleColorInput = {targetedSampleColor};
+        robot.limelight.updatePythonInputs(sampleColorInput);
+
         double[] cameraOutput = getSampleLocations();
 
-        for (int i = 1; i < cameraOutput.length-1; i+=3) {
+        for (int i = 1; i < cameraOutput.length-1; i+=4) {
             if (cameraOutput[i] != 0 && cameraOutput[i + 1] != 0) {
                 robot.cameraCalcs.SampleToRealWorld(cameraOutput[i], cameraOutput[i + 1]);
 
                 double tempTurretAngle = IntakeInverseKinematics.getIKTurretAngle(CameraCalculations.worldPositionX, CameraCalculations.worldPositionY);
                 double tempSlideExtension = IntakeInverseKinematics.getIKSlideExtension(CameraCalculations.worldPositionX, CameraCalculations.worldPositionY);
 
-                if (!Double.isNaN(tempTurretAngle) && tempSlideExtension < (RobotConstants.Intake.slideMax + robot.intake.getSlideSampleCheck()) && cameraOutput[i + 3] == targetedSampleColor){
+                if (!Double.isNaN(tempTurretAngle) && !Double.isNaN(tempSlideExtension)){
+                    if (tempSlideExtension < (RobotConstants.Intake.slideMax + robot.intake.getSlideSampleCheck()) && cameraOutput[i + 3] == targetedSampleColor) {
                     samples.add(new Sample(CameraCalculations.worldPositionX, CameraCalculations.worldPositionY, cameraOutput[i + 2], cameraOutput[i + 3]));
+                    }
                 }
             }
         }

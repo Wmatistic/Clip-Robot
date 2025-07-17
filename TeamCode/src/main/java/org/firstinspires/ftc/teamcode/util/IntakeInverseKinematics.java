@@ -17,13 +17,17 @@ public class IntakeInverseKinematics {
     }
 
     public static double getClawRotation(double r) {
-        return (r + RobotConstants.IntakeIK.clawRotationOffset) / 180;
+        double tempTurretAngleDeg = turretAngleDeg;
+        if (tempTurretAngleDeg > 180) {
+            tempTurretAngleDeg -= 180;
+        }
+        return (r - tempTurretAngleDeg) / 180;
     }
 
     public static double getIKTurretAngle(double x, double y) {
         double temp = Math.toDegrees(Math.acos(x / RobotConstants.Intake.armLength));
         temp = ((temp) + 90) / 360;
-        temp += RobotConstants.IntakeIK.turretOffset;
+        temp *= RobotConstants.IntakeIK.turretOffset;
         return temp;
     }
 

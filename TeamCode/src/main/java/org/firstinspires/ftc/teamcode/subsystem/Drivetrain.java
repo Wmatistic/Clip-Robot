@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.util.RobotConstants;
 import org.firstinspires.ftc.teamcode.util.RobotHardware;
 
 public class Drivetrain implements Subsystem {
@@ -17,8 +18,8 @@ public class Drivetrain implements Subsystem {
     }
 
     public void periodic() {
-        y = robot.driver.getLeftY();
-        x = robot.driver.getLeftX() * 1.1;
+        y = robot.driver.getLeftY() * 1.2;
+        x = robot.driver.getLeftX() * 1.2;
         rx = robot.driver.getRightX() * 1.1;
 
         heading = robot.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);

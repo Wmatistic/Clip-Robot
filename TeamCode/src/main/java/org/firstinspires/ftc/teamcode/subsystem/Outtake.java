@@ -14,7 +14,7 @@ public class Outtake implements Subsystem {
     private double armTarget;
     private double prevArmPosition, armTurns;
 
-    public static boolean slideReset = false;
+    public boolean slideReset = false;
 
     private ClawState clawState;
 
@@ -125,19 +125,18 @@ public class Outtake implements Subsystem {
         }
 
         if (slideReset) {
-//            robot.intakeSlideMotor.setPower(-1);
-//            if (robot.intakeSlideMotor.getCurrent(CurrentUnit.AMPS) > 5) {
-//                robot.intakeSlideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//                robot.intakeSlideMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//                robot.intakeSlideMotor.setPower(0);
-//
-//                slideReset = false;
-//            }
+            robot.outtakeMotorOne.setPower(-1);
+            robot.outtakeMotorTwo.setPower(-1);
+            robot.outtakeMotorThree.setPower(-1);
         } else if (slideTarget == RobotConstants.Outtake.slideStowed && (robot.outtakeMotorOne.getCurrentPosition() - slideTarget) <= 20) {
             setOuttakeMotorsPower(0);
         } else {
             setOuttakeMotorsPower(correction);
         }
+    }
+
+    public void resetSlides(boolean slideReset) {
+        this.slideReset = slideReset;
     }
 
     public void setOuttakeMotorsPower(double power) {

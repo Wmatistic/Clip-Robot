@@ -42,7 +42,7 @@ public class ClipMech implements Subsystem {
         this.leftClipHolderTurns = 0;
         this.rightClipHolderTurns = 0;
 
-        this.currentClip = 5;
+        this.currentClip = 1;
 
         this.clipMechState = ClipMechState.STOWED;
     }

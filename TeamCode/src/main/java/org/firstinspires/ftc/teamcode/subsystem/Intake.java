@@ -32,6 +32,9 @@ public class Intake implements Subsystem {
         setExtensionTarget(RobotConstants.Intake.slideStowed);
         setTurretTarget(RobotConstants.Intake.turretStowed);
         slideSampleCheck = 0;
+
+        clawState = ClawState.OPEN;
+        intakeState = IntakeState.STOWED;
     }
 
     public void setClawState(ClawState state) {
@@ -46,8 +49,12 @@ public class Intake implements Subsystem {
         }
     }
 
-    public void setState(IntakeState state) {
+    public IntakeState getIntakeState() {
+        return intakeState;
+    }
 
+    public void setIntakeState(IntakeState state) {
+        this.intakeState = state;
     }
 
     public void periodic() {
@@ -92,7 +99,7 @@ public class Intake implements Subsystem {
 
         if (slideReset) {
             robot.intakeSlideMotor.setPower(-1);
-            if (robot.intakeSlideMotor.getCurrent(CurrentUnit.AMPS) > 5) {
+            if (robot.intakeSlideMotor.getCurrent(CurrentUnit.AMPS) > RobotConstants.Intake.slideResetAmpThreshold) {
                 robot.intakeSlideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 robot.intakeSlideMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 robot.intakeSlideMotor.setPower(0);
