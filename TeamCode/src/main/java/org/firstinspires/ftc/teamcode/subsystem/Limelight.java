@@ -16,6 +16,7 @@ import org.firstinspires.ftc.teamcode.util.RobotHardware;
 import org.firstinspires.ftc.teamcode.util.Sample;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.lang.*;
 
@@ -30,12 +31,19 @@ public class Limelight {
 
     private int targetedSampleColor;
 
+    public enum SortingDirection {
+        LEFT, RIGHT, NONE
+    }
+
+    private SortingDirection sortingDirection;
+
     public Limelight() {
         this.robot = RobotHardware.getInstance();
         result = robot.limelight.getLatestResult();
 
         samples = new ArrayList<>();
         targetedSampleIndex = 0;
+        sortingDirection = SortingDirection.NONE;
     }
 
     public void refreshResult() {
@@ -72,6 +80,17 @@ public class Limelight {
                 }
             }
         }
+
+        if (sortingDirection == SortingDirection.LEFT) {
+            samples.sort(Comparator.comparingDouble(Sample::getX).reversed());
+        } else if (sortingDirection == SortingDirection.RIGHT) {
+            samples.sort(Comparator.comparingDouble(Sample::getX));
+        }
+
+    }
+
+    public void setSortingDirection(SortingDirection sortingDirection) {
+        this.sortingDirection = sortingDirection;
     }
 
     public Sample getTargetedSample() {
@@ -82,6 +101,14 @@ public class Limelight {
         if (color >= 0 && color <= 2) {
             targetedSampleColor = color;
         }
+    }
+
+    public int getTargetedSampleIndex() {
+        return targetedSampleIndex;
+    }
+
+    public void setTargetedSampleIndex(int targetedSampleIndex) {
+        this.targetedSampleIndex = targetedSampleIndex;
     }
 
     public void targetNextSample() {

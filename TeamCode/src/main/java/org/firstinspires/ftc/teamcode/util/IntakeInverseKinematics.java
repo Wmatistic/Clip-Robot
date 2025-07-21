@@ -55,6 +55,10 @@ public class IntakeInverseKinematics {
 
         result *= RobotConstants.IntakeIK.slideOffset;
 
+        if (result < RobotConstants.IntakeIK.underTicks) {
+            result *= RobotConstants.IntakeIK.lowerIncreaseBy;
+        }
+
         return result;
     }
 }

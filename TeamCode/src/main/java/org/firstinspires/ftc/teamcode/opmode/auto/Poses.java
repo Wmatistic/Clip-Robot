@@ -12,10 +12,14 @@ public class Poses {
         public static Pose2d start = new Pose2d(0, 0, Math.toRadians(0));
 
         // Score Preload
-        public static Pose2d chamberPreload = new Pose2d(29, 5, Math.toRadians(0));
-        public static double chamberBackUp = 10;
+        public static Pose2d chamberPreload = new Pose2d(27, 5, Math.toRadians(0));
+        public static Pose2d chamberBackUp = new Pose2d(10, 5, Math.toRadians(0));
 
         public static Pose2d pickupClipsFar = new Pose2d(10, -35, Math.toRadians(0));
-        public static double pickupClipsClose = -2;
+        public static Pose2d pickupClipsClose = new Pose2d(-3, -35, Math.toRadians(0));
+
+        public static Pose2d intaking = new Pose2d(27, 8, Math.toRadians(0));
+        public static Pose2d intaking2 = new Pose2d(31, 8, Math.toRadians(0));
+        public static Pose2d clippingBackUp = new Pose2d(26, intaking.position.y, Math.toRadians(0));
     }
 }

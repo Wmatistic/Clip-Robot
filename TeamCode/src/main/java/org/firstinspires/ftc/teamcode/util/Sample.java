@@ -12,4 +12,8 @@ public class Sample {
         this.r = r;
         this.color = color;
     }
+
+    public double getX() {
+        return x;
+    }
 }

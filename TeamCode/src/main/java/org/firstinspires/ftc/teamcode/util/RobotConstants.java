@@ -25,8 +25,8 @@ public class RobotConstants {
         public static int slideStowed = 0;
 
         public static double turretP = 2;
-        public static double turretI = 0.5;
-        public static double turretD = 0.0;
+        public static double turretI = 0.7;
+        public static double turretD = 0.0001;
         public static double turretF = 0.0;
         public static double turretStowed = 0.37;
         public static double turretTransfer = 0.11;
@@ -61,6 +61,8 @@ public class RobotConstants {
         public static double turretOffset = 1.15;
         public static double clawRotationOffset = -0.17;
         public static double intakeXOffset = -5.199;
+        public static int underTicks = 70;
+        public static double lowerIncreaseBy = 1.5;
     }
 
     @Config

@@ -26,30 +26,18 @@ public class PickupClipsCommand extends SelectCommand {
                                     new ClipMechStateCommand(ClipMech.ClipMechState.LOAD_MAGAZINE_ONE)
                             ));
                             put(ClipMech.ClipMechState.LOAD_MAGAZINE_ONE, new SequentialCommandGroup(
-                                    new ClipMagazineCommand(ClipMech.ClipHolder.LEFT, RobotConstants.ClipMech.clipMagazinePickupTouching),
-                                    new ClipMagazineClawCommand(ClipMech.ClipHolder.LEFT, RobotConstants.ClipMech.clipMagazineClawOpen),
+                                    new ClipMagazineCommand(ClipMech.ClipHolder.BOTH, RobotConstants.ClipMech.clipMagazinePickupTouching),
+                                    new ClipMagazineClawCommand(ClipMech.ClipHolder.BOTH, RobotConstants.ClipMech.clipMagazineClawOpen),
                                     new WaitCommand(500),
                                     new ClipMechStateCommand(ClipMech.ClipMechState.LOAD_MAGAZINE_TWO)
                             ));
                             put(ClipMech.ClipMechState.LOAD_MAGAZINE_TWO, new SequentialCommandGroup(
-                                    new ClipMagazineClawCommand(ClipMech.ClipHolder.LEFT, RobotConstants.ClipMech.clipMagazineClawClosed),
-                                    new WaitCommand(300),
-                                    new ClipMagazineCommand(ClipMech.ClipHolder.LEFT, RobotConstants.ClipMech.clipMagazinePickupLifted),
+                                    new ClipMagazineClawCommand(ClipMech.ClipHolder.BOTH, RobotConstants.ClipMech.clipMagazineClawClosed),
+                                    new WaitCommand(500),
+                                    new ClipMagazineCommand(ClipMech.ClipHolder.BOTH, RobotConstants.ClipMech.clipMagazinePickupLifted),
                                     new ClipMechStateCommand(ClipMech.ClipMechState.LOAD_MAGAZINE_THREE)
                             ));
                             put(ClipMech.ClipMechState.LOAD_MAGAZINE_THREE, new SequentialCommandGroup(
-                                    new ClipMagazineCommand(ClipMech.ClipHolder.RIGHT, RobotConstants.ClipMech.clipMagazinePickupTouching),
-                                    new ClipMagazineClawCommand(ClipMech.ClipHolder.RIGHT, RobotConstants.ClipMech.clipMagazineClawOpen),
-                                    new WaitCommand(500),
-                                    new ClipMechStateCommand(ClipMech.ClipMechState.LOAD_MAGAZINE_FOUR)
-                            ));
-                            put(ClipMech.ClipMechState.LOAD_MAGAZINE_FOUR, new SequentialCommandGroup(
-                                    new ClipMagazineClawCommand(ClipMech.ClipHolder.RIGHT, RobotConstants.ClipMech.clipMagazineClawClosed),
-                                    new WaitCommand(300),
-                                    new ClipMagazineCommand(ClipMech.ClipHolder.RIGHT, RobotConstants.ClipMech.clipMagazinePickupLifted),
-                                    new ClipMechStateCommand(ClipMech.ClipMechState.LOAD_MAGAZINE_FIVE)
-                            ));
-                            put(ClipMech.ClipMechState.LOAD_MAGAZINE_FIVE, new SequentialCommandGroup(
                                     new ClipMagazineCommand(ClipMech.ClipHolder.BOTH, RobotConstants.ClipMech.clipMagazineStowed),
                                     new ClipMagazineClawCommand(ClipMech.ClipHolder.BOTH, RobotConstants.ClipMech.clipMagazineClawClosed),
                                     new WaitCommand(400),
