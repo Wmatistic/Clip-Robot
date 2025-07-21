@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode.subsystem;
 
 import com.arcrobotics.ftclib.command.Subsystem;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.util.Globals;
 import org.firstinspires.ftc.teamcode.util.RobotConstants;
 import org.firstinspires.ftc.teamcode.util.RobotHardware;
@@ -106,9 +108,16 @@ public class Outtake implements Subsystem {
     public double getTurns() {
         return armTurns;
     }
+    public void setTurns(double turns) {
+        this.armTurns = turns;
+    }
 
     public void setArmTarget(double armTarget) {
         this.armTarget = armTarget;
+    }
+
+    public boolean isArmAtTarget() {
+        return robot.outtakeArmPID.atSetPoint();
     }
 
     public void setSlideTarget(int slideTarget) {
@@ -118,21 +127,39 @@ public class Outtake implements Subsystem {
     public void powerSlides() {
         double correction;
 
-        if (slideTarget > robot.outtakeMotorOne.getCurrentPosition()) {
-            correction = robot.outtakeSlideExtendPID.calculate(robot.outtakeMotorOne.getCurrentPosition(), slideTarget);
+        if (slideTarget > getSlideCurrentPosition()) {
+            correction = robot.outtakeSlideExtendPID.calculate(getSlideCurrentPosition(), slideTarget);
         } else {
-            correction = robot.outtakeSlideRetractPID.calculate(robot.outtakeMotorOne.getCurrentPosition(), slideTarget);
+            correction = robot.outtakeSlideRetractPID.calculate(getSlideCurrentPosition(), slideTarget);
         }
 
         if (slideReset) {
             robot.outtakeMotorOne.setPower(-1);
             robot.outtakeMotorTwo.setPower(-1);
             robot.outtakeMotorThree.setPower(-1);
-        } else if (slideTarget == RobotConstants.Outtake.slideStowed && (robot.outtakeMotorOne.getCurrentPosition() - slideTarget) <= 20) {
+
+            if (robot.outtakeMotorOne.getCurrent(CurrentUnit.AMPS) > RobotConstants.Outtake.slideResetAmpThreshold) {
+                robot.outtakeMotorOne.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                robot.outtakeMotorOne.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                robot.outtakeMotorOne.setPower(0);
+                robot.outtakeMotorTwo.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                robot.outtakeMotorTwo.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                robot.outtakeMotorTwo.setPower(0);
+                robot.outtakeMotorThree.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                robot.outtakeMotorThree.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                robot.outtakeMotorThree.setPower(0);
+
+                slideReset = false;
+            }
+        } else if (slideTarget == RobotConstants.Outtake.slideStowed && (getSlideCurrentPosition() - slideTarget) <= 20) {
             setOuttakeMotorsPower(0);
         } else {
             setOuttakeMotorsPower(correction);
         }
+    }
+
+    public int getSlideCurrentPosition() {
+        return -robot.outtakeMotorOne.getCurrentPosition();
     }
 
     public void resetSlides(boolean slideReset) {

@@ -7,8 +7,10 @@ import org.firstinspires.ftc.teamcode.commands.subsystemcommand.clipmechcommand.
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.clipmechcommand.RailCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.outtakecommand.CheckForSampleCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.outtakecommand.OuttakeArmCommand;
+import org.firstinspires.ftc.teamcode.commands.subsystemcommand.outtakecommand.OuttakeArmWaitCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.outtakecommand.OuttakeClawCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.outtakecommand.OuttakeSlideCommand;
+import org.firstinspires.ftc.teamcode.commands.subsystemcommand.outtakecommand.OuttakeSlideResetCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.outtakecommand.OuttakeStateCommand;
 import org.firstinspires.ftc.teamcode.subsystem.Outtake;
 import org.firstinspires.ftc.teamcode.util.RobotConstants;
@@ -20,12 +22,18 @@ public class StowOuttakeSlides extends SequentialCommandGroup {
                 new RailCommand(RobotHardware.getInstance().clipMech.getOutTheWayPosition()),
                 new ClipPivotCommand(RobotConstants.ClipMech.clipPivotOutTheWay),
                 new OuttakeClawCommand(Outtake.ClawState.OPEN),
-                new OuttakeArmCommand(RobotConstants.Outtake.armStowed),
-                new WaitCommand(500),
-                new OuttakeClawCommand(Outtake.ClawState.CLOSED),
-                new WaitCommand(900),
                 new OuttakeSlideCommand(RobotConstants.Outtake.slideStowed),
+                new WaitCommand(700),
+                new OuttakeSlideResetCommand(),
+                new WaitCommand(200),
+                new OuttakeClawCommand(Outtake.ClawState.CLOSED),
+                new WaitCommand(100),
+                new OuttakeArmCommand(RobotConstants.Outtake.armStowed),
                 new WaitCommand(600),
+                new WaitCommand(400),
+                new OuttakeArmCommand(RobotConstants.Outtake.armStowed + 0.2),
+                new WaitCommand(300),
+                new OuttakeArmCommand(RobotConstants.Outtake.armStowed),
                 new OuttakeStateCommand(Outtake.OuttakeState.STOWED),
                 new CheckForSampleCommand()
         );

@@ -15,6 +15,7 @@ import org.firstinspires.ftc.teamcode.commands.teleopcommand.ClipSampleCommand;
 import org.firstinspires.ftc.teamcode.commands.teleopcommand.IntakeSampleChamberCommand;
 import org.firstinspires.ftc.teamcode.commands.teleopcommand.IntakeSampleCommand;
 import org.firstinspires.ftc.teamcode.commands.teleopcommand.LoadClipCommand;
+import org.firstinspires.ftc.teamcode.commands.teleopcommand.PickupClipsCommand;
 import org.firstinspires.ftc.teamcode.commands.teleopcommand.ScoreOnChamber;
 import org.firstinspires.ftc.teamcode.commands.teleopcommand.StowOuttakeSlides;
 import org.firstinspires.ftc.teamcode.commands.teleopcommand.TransferSampleCommand;
@@ -51,7 +52,8 @@ public class Cheesing extends CommandOpMode {
         driver = new GamepadEx(gamepad1);
         operator = new GamepadEx(gamepad2);
 
-        robot.init(hardwareMap, driver);
+        robot.init(hardwareMap);
+        robot.drivetrain.setDriver(driver);
 
         robot.limelight.start();
 
@@ -103,10 +105,15 @@ public class Cheesing extends CommandOpMode {
         //telemetry.addData("Intake Color Sensor Red: ", robot.intakeColorSensor.red());
         //telemetry.addData("Intake Color Sensor Green: ", robot.intakeColorSensor.green());
         //telemetry.addData("Intake Color Sensor Blue: ", robot.intakeColorSensor.blue());
-        telemetry.addData("Outtake Color Sensor Red: ", robot.outtakeColorSensor.red());
-        telemetry.addData("Outtake Color Sensor Green: ", robot.outtakeColorSensor.green());
-        telemetry.addData("Outtake Color Sensor Blue: ", robot.outtakeColorSensor.blue());
+//        telemetry.addData("Outtake Color Sensor Red: ", robot.outtakeColorSensor.red());
+//        telemetry.addData("Outtake Color Sensor Green: ", robot.outtakeColorSensor.green());
+//        telemetry.addData("Outtake Color Sensor Blue: ", robot.outtakeColorSensor.blue());
         telemetry.addData("Current Clip: ", robot.clipMech.getCurrentClip());
+        telemetry.addData("Clip Mech State: ", robot.clipMech.getClipMechState());
+        telemetry.addData("Outtake Motor Position: ", robot.outtake.getSlideCurrentPosition());
+        telemetry.addData("Outtake Motor One Power: ", robot.outtakeMotorOne.getPower());
+        telemetry.addData("Outtake Motor Two Power: ", robot.outtakeMotorTwo.getPower());
+        telemetry.addData("Outtake Motor Three Power: ", robot.outtakeMotorThree.getPower());
         telemetry.update();
 
         if (operator.wasJustPressed(GamepadKeys.Button.LEFT_BUMPER)) {
@@ -117,7 +124,7 @@ public class Cheesing extends CommandOpMode {
             CommandScheduler.getInstance().schedule(new ClipSampleCommand());
         }
 
-        robot.outtake.resetSlides(operator.getButton(GamepadKeys.Button.DPAD_DOWN));
+        //robot.outtake.resetSlides(operator.getButton(GamepadKeys.Button.DPAD_DOWN));
 
         //robot.limelightClass.refreshSamples();
 
@@ -159,7 +166,7 @@ public class Cheesing extends CommandOpMode {
 //            robot.clawRotationServo.setPosition(RobotConstants.Intake.clawRotationStowed);
 //        }
 
-        if (driver.wasJustPressed(GamepadKeys.Button.RIGHT_BUMPER)) {
+        if (driver.wasJustPressed(GamepadKeys.Button.RIGHT_BUMPER) && robot.limelightClass.hasSamples()) {
             CommandScheduler.getInstance().schedule(new IntakeSampleCommand());
         }
 
@@ -233,7 +240,25 @@ public class Cheesing extends CommandOpMode {
                 break;
 
             case STOWED:
+                if (driver.wasJustPressed(GamepadKeys.Button.A)) {
+                    CommandScheduler.getInstance().schedule(new PickupClipsCommand());
+                }
 
+                if (driver.wasJustPressed(GamepadKeys.Button.B)) {
+                    switch (robot.clipMech.getClipMechState()) {
+                        case LOAD_MAGAZINE_ONE:
+                        case LOAD_MAGAZINE_TWO:
+                            robot.clipMech.setClipMechState(ClipMech.ClipMechState.STOWED);
+                            CommandScheduler.getInstance().schedule(new PickupClipsCommand());
+                            break;
+                        case LOAD_MAGAZINE_THREE:
+                            robot.clipMech.setClipMechState(ClipMech.ClipMechState.LOAD_MAGAZINE_TWO);
+                            CommandScheduler.getInstance().schedule(new PickupClipsCommand());
+                            break;
+                        default:
+                            break;
+                    }
+                }
                 break;
         }
     }

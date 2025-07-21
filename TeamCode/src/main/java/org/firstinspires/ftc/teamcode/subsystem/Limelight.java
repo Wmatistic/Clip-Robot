@@ -49,6 +49,7 @@ public class Limelight {
 
     public void refreshSamples() {
         targetedSampleIndex = 0;
+        IntakeInverseKinematics.reset();
         samples.clear();
 
         double[] sampleColorInput = {targetedSampleColor};
@@ -62,10 +63,11 @@ public class Limelight {
 
                 double tempTurretAngle = IntakeInverseKinematics.getIKTurretAngle(CameraCalculations.worldPositionX, CameraCalculations.worldPositionY);
                 double tempSlideExtension = IntakeInverseKinematics.getIKSlideExtension(CameraCalculations.worldPositionX, CameraCalculations.worldPositionY);
+                double tempSlideExtensionInches = IntakeInverseKinematics.getIKSlideExtensionInches(CameraCalculations.worldPositionX, CameraCalculations.worldPositionY);
 
-                if (!Double.isNaN(tempTurretAngle) && !Double.isNaN(tempSlideExtension)){
-                    if (tempSlideExtension < (RobotConstants.Intake.slideMax + robot.intake.getSlideSampleCheck()) && cameraOutput[i + 3] == targetedSampleColor) {
-                    samples.add(new Sample(CameraCalculations.worldPositionX, CameraCalculations.worldPositionY, cameraOutput[i + 2], cameraOutput[i + 3]));
+                if (!Double.isNaN(tempTurretAngle) && !Double.isNaN(tempSlideExtension) && !Double.isNaN(tempSlideExtensionInches)){
+                    if (tempSlideExtension < (RobotConstants.Intake.slideMax + robot.intake.getSlideSampleCheck()) && tempSlideExtension > -50 && cameraOutput[i + 3] == targetedSampleColor) {
+                        samples.add(new Sample(CameraCalculations.worldPositionX, CameraCalculations.worldPositionY, cameraOutput[i + 2], cameraOutput[i + 3]));
                     }
                 }
             }

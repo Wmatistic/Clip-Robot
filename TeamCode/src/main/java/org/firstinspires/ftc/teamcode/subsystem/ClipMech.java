@@ -19,7 +19,7 @@ public class ClipMech implements Subsystem {
     private ClipMechState clipMechState;
 
     public enum ClipMechState {
-        CLIPPING, STOWED
+        CLIPPING, STOWED, LOAD_MAGAZINE_ONE, LOAD_MAGAZINE_TWO, LOAD_MAGAZINE_THREE, LOAD_MAGAZINE_FOUR, LOAD_MAGAZINE_FIVE
     }
 
     public enum ClipHolder {
@@ -64,6 +64,10 @@ public class ClipMech implements Subsystem {
     private void updateRail() {
         double correction = robot.railPID.calculate(getRailPosition(), getRailTarget());
         robot.railServo.setPower(-correction);
+    }
+
+    public void setRightClipHolderTurns(double turns) {
+        rightClipHolderTurns = turns;
     }
 
     public double getCurrentClipPosition() {

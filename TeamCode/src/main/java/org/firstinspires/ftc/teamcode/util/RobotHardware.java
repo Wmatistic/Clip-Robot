@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.util;
 
 import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.roadrunner.Pose2d;
 import com.arcrobotics.ftclib.controller.PIDFController;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
@@ -14,7 +15,9 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.VoltageSensor;
 
+import org.firstinspires.ftc.teamcode.roadrunner.PinpointDrive;
 import org.firstinspires.ftc.teamcode.subsystem.ClipMech;
 import org.firstinspires.ftc.teamcode.subsystem.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystem.Intake;
@@ -69,9 +72,6 @@ public class RobotHardware {
     private static RobotHardware instance = null;
     private boolean enabled;
 
-    public GamepadEx driver;
-
-
 
     public Intake intake;
     public Drivetrain drivetrain;
@@ -92,12 +92,8 @@ public class RobotHardware {
         return instance;
     }
 
-    public void init(final HardwareMap hardwareMap, GamepadEx driver) {
+    public void init(final HardwareMap hardwareMap) {
         this.hardwareMap = hardwareMap;
-
-        this.driver = driver;
-
-
 
         // ******************* INTAKE ******************* //
         this.turretServoInput = hardwareMap.get(AnalogInput.class, RobotConstants.Intake.turretServoInput);
@@ -129,6 +125,11 @@ public class RobotHardware {
         leftRear = hardwareMap.get(DcMotorEx.class, RobotConstants.Drivetrain.leftRear);
         rightRear = hardwareMap.get(DcMotorEx.class, RobotConstants.Drivetrain.rightRear);
         rightFront = hardwareMap.get(DcMotorEx.class, RobotConstants.Drivetrain.rightFront);
+
+        leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         leftFront.setDirection(DcMotorEx.Direction.REVERSE);
         leftRear.setDirection(DcMotorEx.Direction.REVERSE);
@@ -194,7 +195,8 @@ public class RobotHardware {
         outtakeMotorThree.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         outtakeMotorThree.setPower(0);
 
-        outtakeMotorTwo.setDirection(DcMotorSimple.Direction.REVERSE);
+        outtakeMotorOne.setDirection(DcMotorSimple.Direction.REVERSE);
+        //outtakeMotorTwo.setDirection(DcMotorSimple.Direction.REVERSE);
         outtakeMotorThree.setDirection(DcMotorSimple.Direction.REVERSE);
 
         outtakeSlideExtendPID = new PIDFController(RobotConstants.Outtake.outtakeExtendingP, RobotConstants.Outtake.outtakeExtendingI, RobotConstants.Outtake.outtakeExtendingD, RobotConstants.Outtake.outtakeExtendingF);
@@ -224,6 +226,12 @@ public class RobotHardware {
     public void periodic() {
         intake.periodic();
         drivetrain.periodic();
+        clipMech.periodic();
+        outtake.periodic();
+    }
+
+    public void autoPeriodic() {
+        intake.periodic();
         clipMech.periodic();
         outtake.periodic();
     }

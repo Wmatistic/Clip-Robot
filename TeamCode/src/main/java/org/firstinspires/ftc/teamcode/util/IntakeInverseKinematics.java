@@ -16,6 +16,12 @@ public class IntakeInverseKinematics {
         clawRotation = getClawRotation(r);
     }
 
+    public static void reset() {
+        turretAngle = RobotConstants.Intake.turretStowed;
+        slideExtension = RobotConstants.Intake.slideStowed;
+        clawRotation = RobotConstants.Intake.clawRotationStowed;
+    }
+
     public static double getClawRotation(double r) {
         double tempTurretAngleDeg = turretAngleDeg;
         if (tempTurretAngleDeg > 180) {

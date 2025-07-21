@@ -19,7 +19,7 @@ public class LoadClipCommand extends SequentialCommandGroup {
         super(
                 new RailCommand(RobotHardware.getInstance().clipMech.getClippingPosition()),
                 new ClipPivotCommand(RobotConstants.ClipMech.clipPivotTransfer),
-                new WaitCommand(500),
+                new WaitCommand(1000),
                 new ClipMagazineCommand(RobotHardware.getInstance().clipMech.getCurrentClipMagazine(), RobotConstants.ClipMech.clipMagazineTransfer),
                 new WaitCommand(700),
                 new RailCommand(RobotHardware.getInstance().clipMech.getCurrentClipPosition()),
@@ -36,7 +36,6 @@ public class LoadClipCommand extends SequentialCommandGroup {
                 new RailCommand(RobotHardware.getInstance().clipMech.getClippingPosition()),
                 new WaitCommand(100),
                 new ClipMagazineCommand(RobotHardware.getInstance().clipMech.getCurrentClipMagazine(), RobotConstants.ClipMech.clipMagazineStowed),
-                new IncrementClipCommand(),
                 new ClipLoadedCommand(true),
                 new ClipMechStateCommand(ClipMech.ClipMechState.STOWED)
         );

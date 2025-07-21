@@ -29,7 +29,7 @@ public class RobotConstants {
         public static double turretD = 0.0;
         public static double turretF = 0.0;
         public static double turretStowed = 0.37;
-        public static double turretTransfer = 0.1;
+        public static double turretTransfer = 0.11;
         public static double turretChamber = 0.45;
 
         public static double armStowed = 0.05;
@@ -41,7 +41,7 @@ public class RobotConstants {
         public static double clawClosed = 0.55;
 
         public static double clawRotationStowed = 0.0;
-        public static double clawRotationTransfer = 0.6;
+        public static double clawRotationTransfer = 0.55;
         public static double clawRotationChamber = 0.4;
 
         // Color Sensor Values
@@ -95,11 +95,11 @@ public class RobotConstants {
 
         // Rail Positions are relative to rail, left and right are based on rail not clip holder
         public static double railStowed = 0.05;
-        public static double railClippingRight = 1.0;
+        public static double railClippingRight = 1.02;
         public static double railClippingLeft = 0.26;
-        public static double railSecureClipLeft = 0.60;
+        public static double railSecureClipLeft = 0.75;
         public static double railSecureClipRight = 0.55;
-        public static double railOutTheWayRight = 1.3;
+        public static double railOutTheWayRight = 1.35;
         public static double railOutTheWayLeft = 0.0;
 
         public static double railFirstClip = 0.6;
@@ -111,23 +111,26 @@ public class RobotConstants {
         public static double railSeventhClip = 1.15;
         public static double railEighthClip = 1.3;
 
-        public static double clipMagazineP = 2;
-        public static double clipMagazineI = 0.04;
+        public static double clipMagazineP = 1.5;
+        public static double clipMagazineI = 0.07;
         public static double clipMagazineD = 0.0;
         public static double clipMagazineF = 0.0;
 
         public static double clipMagazineStowed = 0.1;
-        public static double clipMagazineTransfer = 0.65;
+        public static double clipMagazineTransfer = 0.62;
+        public static double clipMagazinePickupInitial = 0.3;
+        public static double clipMagazinePickupTouching = 0.125;
+        public static double clipMagazinePickupLifted = -0.1;
 
         public static double clipMagazineClawClosed = 0.0;
         public static double clipMagazineClawOpen = 0.7;
         public static double clipMagazineClawHalfOpen = 0.35;
 
-        public static double clipPivotUp = 0.6;
+        public static double clipPivotUp = 0.65;
         public static double clipPivotDown = 0.0;
         public static double clipPivotTransfer = 0.25;
         public static double clipPivotOutTheWay = 0.15;
-        public static double clipPivotPullOut  = 0.35;
+        public static double clipPivotPullOut  = 0.25;
     }
 
     @Config
@@ -145,15 +148,17 @@ public class RobotConstants {
         public static double outtakeExtendingD = 0.0;
         public static double outtakeExtendingF = 0.0;
 
-        public static double outtakeRetractingP = 0.0044;
-        public static double outtakeRetractingI = 0.0;
+        public static double outtakeRetractingP = 0.0034;
+        public static double outtakeRetractingI = 0.0001;
         public static double outtakeRetractingD = 0.0;
         public static double outtakeRetractingF = 0.0;
 
         public static int slideStowed = 0;
-        public static int slideTransfer = 350;
-        public static int slideChamber = 350;
-        public static int slideChamberScoring = 100;
+        public static int slideTransfer = 1000;
+        public static int slideChamber = 900;
+        public static int slideChamberScoring = 280;
+
+        public static double slideResetAmpThreshold = 1;
 
 
 
@@ -162,18 +167,19 @@ public class RobotConstants {
         public static double armD = 0.0;
         public static double armF = 0.0;
 
-        public static double armStowed = 0.5;
+        public static double armStowed = 0.51;
+        public static double armTransfer = 0.5;
         public static double armClip = -0.5;
-        public static double armClipInter = 0.3;
-        public static double armChamberScoreReady = 0.4;
+        public static double armClipInter = 0.5;
+        public static double armChamberScoreReady = 0.49;
         public static double armChamberScoreInitial = -0.2;
         public static double armChamberScoreFinal = 0.2;
-        public static double armTest = -1;
+        public static double armPreload = 0.4;
 
 
 
-        public static double clawClosed = 0.48;
-        public static double clawOpen = 0.25;
+        public static double clawClosed = 0.5;
+        public static double clawOpen = 0.27;
 
 
 
