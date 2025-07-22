@@ -42,7 +42,7 @@ public class ClipMech implements Subsystem {
         this.leftClipHolderTurns = 0;
         this.rightClipHolderTurns = 0;
 
-        this.currentClip = 1;
+        this.currentClip = 5;
 
         this.clipMechState = ClipMechState.STOWED;
     }
@@ -124,6 +124,17 @@ public class ClipMech implements Subsystem {
 
     public void setRailTarget(double target) {
         railTarget = target;
+    }
+
+
+    public double getClipMagazineTransferPosition() {
+        if (getCurrentClipMagazine() == ClipHolder.RIGHT) {
+            return RobotConstants.ClipMech.clipMagazineRightTransfer;
+        } else if (getCurrentClipMagazine() == ClipHolder.LEFT) {
+            return RobotConstants.ClipMech.clipMagazineLeftTransfer;
+        } else {
+            return RobotConstants.ClipMech.clipMagazineLeftTransfer;
+        }
     }
 
     public double getClippingPosition() {

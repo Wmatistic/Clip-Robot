@@ -8,7 +8,6 @@ import org.firstinspires.ftc.teamcode.commands.subsystemcommand.clipmechcommand.
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.clipmechcommand.ClipLoadedCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.clipmechcommand.ClipMechStateCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.clipmechcommand.ClipPivotCommand;
-import org.firstinspires.ftc.teamcode.commands.subsystemcommand.clipmechcommand.IncrementClipCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.clipmechcommand.RailCommand;
 import org.firstinspires.ftc.teamcode.subsystem.ClipMech;
 import org.firstinspires.ftc.teamcode.util.RobotConstants;
@@ -20,7 +19,7 @@ public class LoadClipCommand extends SequentialCommandGroup {
                 new RailCommand(RobotHardware.getInstance().clipMech.getClippingPosition()),
                 new ClipPivotCommand(RobotConstants.ClipMech.clipPivotTransfer),
                 new WaitCommand(1000),
-                new ClipMagazineCommand(RobotHardware.getInstance().clipMech.getCurrentClipMagazine(), RobotConstants.ClipMech.clipMagazineTransfer),
+                new ClipMagazineCommand(RobotHardware.getInstance().clipMech.getCurrentClipMagazine(), RobotHardware.getInstance().clipMech.getClipMagazineTransferPosition()),
                 new WaitCommand(700),
                 new RailCommand(RobotHardware.getInstance().clipMech.getCurrentClipPosition()),
                 new WaitCommand(800),

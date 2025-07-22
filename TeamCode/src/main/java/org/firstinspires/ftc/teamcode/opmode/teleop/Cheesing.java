@@ -77,7 +77,8 @@ public class Cheesing extends CommandOpMode {
         telemetry.addData("Intake Slide Motor Power: ",robot.intakeSlideMotor.getPower());
         telemetry.addData("Intake Slide Motor Target", robot.intake.getExtensionTarget());
         //telemetry.addData("Turret Smth", robot.intake.getTurretPosition());
-        telemetry.addData("Intake IK Turret Angle", Double.isNaN(IntakeInverseKinematics.turretAngle));
+        telemetry.addData("Intake IK Turret Angle", IntakeInverseKinematics.turretAngle);
+        telemetry.addData("Intake IK Turret Angle Deg: ", IntakeInverseKinematics.turretAngleDeg);
         telemetry.addData("Intake IK Slide Extension", IntakeInverseKinematics.slideExtension);
         telemetry.addData("Slide Extension Inches", IntakeInverseKinematics.slideExtensionInches);
         //telemetry.addData("Limelight Result", Arrays.toString(robot.limelightClass.getSampleLocations()));
@@ -114,6 +115,7 @@ public class Cheesing extends CommandOpMode {
         telemetry.addData("Outtake Motor One Power: ", robot.outtakeMotorOne.getPower());
         telemetry.addData("Outtake Motor Two Power: ", robot.outtakeMotorTwo.getPower());
         telemetry.addData("Outtake Motor Three Power: ", robot.outtakeMotorThree.getPower());
+        telemetry.addData("Samples Visible: ", robot.limelightClass.getSamples().size());
         telemetry.update();
 
         if (operator.wasJustPressed(GamepadKeys.Button.LEFT_BUMPER)) {

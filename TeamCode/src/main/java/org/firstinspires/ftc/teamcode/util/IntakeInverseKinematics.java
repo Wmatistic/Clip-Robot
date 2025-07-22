@@ -24,9 +24,7 @@ public class IntakeInverseKinematics {
 
     public static double getClawRotation(double r) {
         double tempTurretAngleDeg = turretAngleDeg;
-        if (tempTurretAngleDeg > 180) {
-            tempTurretAngleDeg -= 180;
-        }
+        tempTurretAngleDeg -= 180;
         return (r - tempTurretAngleDeg) / 180;
     }
 

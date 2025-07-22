@@ -4,12 +4,9 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.SleepAction;
-import com.acmerobotics.roadrunner.ftc.Actions;
-import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.ConditionalCommand;
 import com.arcrobotics.ftclib.command.InstantCommand;
-import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -36,15 +33,13 @@ import org.firstinspires.ftc.teamcode.util.RobotConstants;
 import org.firstinspires.ftc.teamcode.util.RobotHardware;
 import org.firstinspires.ftc.teamcode.util.Sample;
 
-import java.util.concurrent.atomic.AtomicReference;
-
 @Autonomous
 public class RedSpec extends OpMode {
 
     PinpointDrive drive;
     TelemetryPacket tele;
-    SequentialAction path1, path2;
-    boolean path1End, path2End, initialScan;
+    SequentialAction path1, path2, clipAndScorePath;
+    boolean path1End, path2End, backUpEnd, initialScan;
     RobotHardware robot = RobotHardware.getInstance();
 
     Sample targetedSample;
@@ -73,9 +68,12 @@ public class RedSpec extends OpMode {
         initialScan = true;
 
         path1End = false;
+        path2End = false;
+        backUpEnd = false;
 
         path1 = createPath1();
         path2 = intakingLoop();
+        clipAndScorePath = clipAndScore();
     }
 
     @Override
@@ -129,9 +127,6 @@ public class RedSpec extends OpMode {
                         )
                 );
 
-//                targetedSample = robot.limelightClass.getTargetedSample();
-//                IntakeInverseKinematics.calculateIK(targetedSample.x, targetedSample.y, targetedSample.r);
-
                 path2 = intakingLoop();
 
                 initialScan = false;
@@ -143,29 +138,17 @@ public class RedSpec extends OpMode {
         if (path2End) {
 
             if (robot.intake.isSample()) {
-                path2 = clipping();
-            } else {
-//                if (robot.limelightClass.getTargetedSampleIndex() == 0 || robot.limelightClass.getTargetedSampleIndex()+1 > robot.limelightClass.getSamples().size()-1) {
-//                    CommandScheduler.getInstance().schedule(
-//                            new SequentialCommandGroup(
-//                                    new InstantCommand(() -> robot.limelightClass.setTargetedSampleIndex(0)),
-//                                    new InstantCommand(() -> robot.limelightClass.refreshSamples()),
-//                                    new WaitCommand(100),
-//                                    new InstantCommand(() -> robot.limelightClass.refreshSamples()),
-//                                    new WaitCommand(100)
-//                            )
-//                    );
-//                } else {
-//                    CommandScheduler.getInstance().schedule(new InstantCommand(() -> robot.limelightClass.targetNextSample()));
-//                }
-//
-//                CommandScheduler.getInstance().schedule(
-//                        new SequentialCommandGroup(
-//                                new InstantCommand(() -> targetedSample = robot.limelightClass.getTargetedSample()),
-//                                new InstantCommand(() -> IntakeInverseKinematics.calculateIK(targetedSample.x, targetedSample.y, targetedSample.r))
-//                        )
-//                );
 
+                if (backUpEnd && Globals.CLIP_LOADED) {
+                    path2 = clipAndScore();
+                    backUpEnd = false;
+                } else if (!backUpEnd) {
+                    path2 = backUp();
+                } else if(!Globals.CLIP_LOADED) {
+                    path2 = new SequentialAction();
+                }
+
+            } else {
                 CommandScheduler.getInstance().schedule(
                         new SequentialCommandGroup(
                                 new ConditionalCommand(
@@ -216,9 +199,24 @@ public class RedSpec extends OpMode {
         );
     }
 
-    public SequentialAction clipping() {
+    public SequentialAction backUp() {
         return new SequentialAction(
-                backUpClipAndScore(), endPath2()
+                backUpAndStow(), endBackUp(), endPath2()
+        );
+    }
+
+    public SequentialAction endBackUp() {
+        return new SequentialAction(
+                telemetryPacket -> {
+                    backUpEnd = true;
+                    return false;
+                }
+        );
+    }
+
+    public SequentialAction clipAndScore() {
+        return new SequentialAction(
+                clipAndScoreAction(), endPath2()
         );
     }
 
@@ -377,7 +375,7 @@ public class RedSpec extends OpMode {
         );
     }
 
-    public SequentialAction backUpClipAndScore() {
+    public SequentialAction backUpAndStow() {
         return new SequentialAction(
                 drive.actionBuilder(Poses.RedSpec.intaking)
                         .lineToX(Poses.RedSpec.clippingBackUp.position.x)
@@ -388,9 +386,14 @@ public class RedSpec extends OpMode {
                 telemetryPacket -> {
                     CommandScheduler.getInstance().schedule(new IntakeSampleChamberCommand());
                     return false;
-                },
+                }
+        );
+    }
 
-                new SleepAction(0.8),
+    public SequentialAction clipAndScoreAction() {
+        return new SequentialAction(
+
+                new SleepAction(0.5),
 
                 telemetryPacket -> {
                     CommandScheduler.getInstance().schedule(
@@ -431,7 +434,6 @@ public class RedSpec extends OpMode {
                 },
 
                 new SleepAction(2.0)
-
         );
     }
 

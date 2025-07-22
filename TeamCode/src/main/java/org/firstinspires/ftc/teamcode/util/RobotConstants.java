@@ -29,7 +29,7 @@ public class RobotConstants {
         public static double turretD = 0.0001;
         public static double turretF = 0.0;
         public static double turretStowed = 0.37;
-        public static double turretTransfer = 0.11;
+        public static double turretTransfer = 0.12;
         public static double turretChamber = 0.45;
 
         public static double armStowed = 0.05;
@@ -57,7 +57,7 @@ public class RobotConstants {
 
     @Config
     public static class IntakeIK {
-        public static double slideOffset = 0.8;
+        public static double slideOffset = 0.95;
         public static double turretOffset = 1.15;
         public static double clawRotationOffset = -0.17;
         public static double intakeXOffset = -5.199;
@@ -119,7 +119,8 @@ public class RobotConstants {
         public static double clipMagazineF = 0.0;
 
         public static double clipMagazineStowed = 0.1;
-        public static double clipMagazineTransfer = 0.62;
+        public static double clipMagazineLeftTransfer = 0.62;
+        public static double clipMagazineRightTransfer = 0.64;
         public static double clipMagazinePickupInitial = 0.3;
         public static double clipMagazinePickupTouching = 0.125;
         public static double clipMagazinePickupLifted = -0.1;
@@ -128,7 +129,7 @@ public class RobotConstants {
         public static double clipMagazineClawOpen = 0.7;
         public static double clipMagazineClawHalfOpen = 0.35;
 
-        public static double clipPivotUp = 0.65;
+        public static double clipPivotUp = 0.68;
         public static double clipPivotDown = 0.0;
         public static double clipPivotTransfer = 0.25;
         public static double clipPivotOutTheWay = 0.15;

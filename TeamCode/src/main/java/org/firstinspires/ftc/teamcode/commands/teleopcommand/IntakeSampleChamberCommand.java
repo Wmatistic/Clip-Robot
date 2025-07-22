@@ -39,7 +39,7 @@ public class IntakeSampleChamberCommand extends SelectCommand {
                                     new IntakeSlideCommand(IntakeInverseKinematics.slideExtension),
                                     new TurretCommand(IntakeInverseKinematics.turretAngle),
                                     new ClawRotationCommand(IntakeInverseKinematics.clawRotation),
-                                    new WaitCommand(1500),
+                                    new WaitCommand(1000),
                                     new IntakeArmCommand(RobotConstants.Intake.armIntake),
                                     new WaitCommand(500),
                                     new IntakeClawCommand(Intake.ClawState.CLOSED),
