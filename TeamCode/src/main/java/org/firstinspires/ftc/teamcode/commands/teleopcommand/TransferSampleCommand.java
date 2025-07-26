@@ -32,7 +32,7 @@ public class TransferSampleCommand extends SequentialCommandGroup {
                 new TurretCommand(RobotConstants.Intake.turretTransfer),
                 new RailCommand(RobotHardware.getInstance().clipMech.getOutTheWayPosition()),
                 new ClipPivotCommand(RobotConstants.ClipMech.clipPivotTransfer),
-                new WaitCommand(700),
+                new WaitCommand(1000),
                 new IntakeArmCommand(RobotConstants.Intake.armTransfer),
                 new ClawRotationCommand(RobotConstants.Intake.clawRotationTransfer),
                 new WaitCommand(500),

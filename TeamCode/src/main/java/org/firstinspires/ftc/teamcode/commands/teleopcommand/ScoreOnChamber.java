@@ -4,6 +4,7 @@ import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.clipmechcommand.ClipPivotCommand;
+import org.firstinspires.ftc.teamcode.commands.subsystemcommand.clipmechcommand.IncrementClipCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.outtakecommand.OuttakeArmCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.outtakecommand.OuttakeClawCommand;
 import org.firstinspires.ftc.teamcode.commands.subsystemcommand.outtakecommand.OuttakeSlideCommand;
@@ -24,7 +25,8 @@ public class ScoreOnChamber extends SequentialCommandGroup {
                 new OuttakeSlideCommand(RobotConstants.Outtake.slideChamberScoring),
                 new WaitCommand(50),
                 new OuttakeArmCommand(RobotConstants.Outtake.armChamberScoreFinal),
-                new OuttakeStateCommand(Outtake.OuttakeState.SCORING_CHAMBER_FINAL)
+                new OuttakeStateCommand(Outtake.OuttakeState.SCORING_CHAMBER_FINAL),
+                new IncrementClipCommand()
         );
     }
 }

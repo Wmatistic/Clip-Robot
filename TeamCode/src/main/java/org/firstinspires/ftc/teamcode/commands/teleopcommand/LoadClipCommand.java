@@ -16,6 +16,7 @@ import org.firstinspires.ftc.teamcode.util.RobotHardware;
 public class LoadClipCommand extends SequentialCommandGroup {
     public LoadClipCommand() {
         super(
+                new ClipMechStateCommand(ClipMech.ClipMechState.CLIPPING),
                 new RailCommand(RobotHardware.getInstance().clipMech.getClippingPosition()),
                 new ClipPivotCommand(RobotConstants.ClipMech.clipPivotTransfer),
                 new WaitCommand(1000),

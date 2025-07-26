@@ -21,7 +21,7 @@ public class RobotConstants {
         public static double slideD = 0.0;
         public static double slideF = 0.0;
         public static double slideResetAmpThreshold = 5.5;
-        public static int slideMax = 450;
+        public static int slideMax = 700; // 450
         public static int slideStowed = 0;
 
         public static double turretP = 2;
@@ -29,7 +29,7 @@ public class RobotConstants {
         public static double turretD = 0.0001;
         public static double turretF = 0.0;
         public static double turretStowed = 0.37;
-        public static double turretTransfer = 0.12;
+        public static double turretTransfer = 0.115;
         public static double turretChamber = 0.45;
 
         public static double armStowed = 0.05;
@@ -51,13 +51,13 @@ public class RobotConstants {
         public static int upperGreen = 0;
         public static int lowerGreen = 0;
 
-        public static int upperBlue = 0;
-        public static int lowerBlue = 0;
+        public static int upperBlue = 1100;
+        public static int lowerBlue = 300;
     }
 
     @Config
     public static class IntakeIK {
-        public static double slideOffset = 0.95;
+        public static double slideOffset = 0.85;
         public static double turretOffset = 1.15;
         public static double clawRotationOffset = -0.17;
         public static double intakeXOffset = -5.199;
@@ -98,7 +98,7 @@ public class RobotConstants {
         // Rail Positions are relative to rail, left and right are based on rail not clip holder
         public static double railStowed = 0.05;
         public static double railClippingRight = 1.02;
-        public static double railClippingLeft = 0.26;
+        public static double railClippingLeft = 0.3;
         public static double railSecureClipLeft = 0.75;
         public static double railSecureClipRight = 0.55;
         public static double railOutTheWayRight = 1.35;
@@ -120,7 +120,7 @@ public class RobotConstants {
 
         public static double clipMagazineStowed = 0.1;
         public static double clipMagazineLeftTransfer = 0.62;
-        public static double clipMagazineRightTransfer = 0.64;
+        public static double clipMagazineRightTransfer = 0.645;
         public static double clipMagazinePickupInitial = 0.3;
         public static double clipMagazinePickupTouching = 0.125;
         public static double clipMagazinePickupLifted = -0.1;
@@ -129,11 +129,11 @@ public class RobotConstants {
         public static double clipMagazineClawOpen = 0.7;
         public static double clipMagazineClawHalfOpen = 0.35;
 
-        public static double clipPivotUp = 0.68;
+        public static double clipPivotUp = 0.63;
         public static double clipPivotDown = 0.0;
         public static double clipPivotTransfer = 0.25;
         public static double clipPivotOutTheWay = 0.15;
-        public static double clipPivotPullOut  = 0.25;
+        public static double clipPivotPullOut  = 0.2;
     }
 
     @Config
@@ -171,7 +171,7 @@ public class RobotConstants {
         public static double armF = 0.0;
 
         public static double armStowed = 0.51;
-        public static double armTransfer = 0.5;
+        public static double armTransfer = 0.48;
         public static double armClip = -0.5;
         public static double armClipInter = 0.5;
         public static double armChamberScoreReady = 0.49;
@@ -194,6 +194,6 @@ public class RobotConstants {
         public static int lowerGreen = 0;
 
         public static int upperBlue = 2000;
-        public static int lowerBlue = 300;
+        public static int lowerBlue = 500;
     }
 }

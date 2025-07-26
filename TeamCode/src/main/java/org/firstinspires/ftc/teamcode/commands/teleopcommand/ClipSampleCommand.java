@@ -19,7 +19,9 @@ import org.firstinspires.ftc.teamcode.util.RobotHardware;
 public class ClipSampleCommand extends SequentialCommandGroup {
     public ClipSampleCommand() {
         super(
+                new ClipMechStateCommand(ClipMech.ClipMechState.CLIPPING),
                 new OuttakeClawCommand(Outtake.ClawState.CLOSED),
+                new OuttakeArmCommand(RobotConstants.Outtake.armStowed),
                 new ClipPivotCommand(RobotConstants.ClipMech.clipPivotUp),
                 new RailCommand(RobotHardware.getInstance().clipMech.getClippingPosition()),
                 new WaitCommand(400),
@@ -35,6 +37,7 @@ public class ClipSampleCommand extends SequentialCommandGroup {
                 new WaitCommand(400),
                 new OuttakeArmCommand(RobotConstants.Outtake.armStowed),
                 new ClipPivotCommand(RobotConstants.ClipMech.clipPivotPullOut),
+                new WaitCommand(400),
                 new RailCommand(RobotHardware.getInstance().clipMech.getOutTheWayPosition()),
                 new WaitCommand(800),
                 new OuttakeArmCommand(RobotConstants.Outtake.armStowed + 0.4),
@@ -42,8 +45,7 @@ public class ClipSampleCommand extends SequentialCommandGroup {
                 new OuttakeArmCommand(RobotConstants.Outtake.armChamberScoreReady),
                 new OuttakeStateCommand(Outtake.OuttakeState.SCORING_CHAMBER_INITIAL),
                 new ClipLoadedCommand(false),
-                new ClipMechStateCommand(ClipMech.ClipMechState.STOWED),
-                new IncrementClipCommand()
+                new ClipMechStateCommand(ClipMech.ClipMechState.STOWED)
         );
     }
 }
